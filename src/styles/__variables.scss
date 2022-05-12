@@ -1,0 +1,115 @@
+$white : #fff;
+$black: #1a1a1a;
+$blue: #686DCD;
+$semiBlue: rgba(104, 109, 205, 0.67);
+$orange: #FF6F61; 
+@font-face {
+    font-family: "EquinoxBold";
+    src: url("../../public/Webfonts/EquinoxBold.woff") format("woff"),
+}
+@font-face {
+    font-family: "EquinoxRegular";
+    src: url("../../public/Webfonts/EquinoxRegular.woff") format("woff"),
+}
+.fontHelvetica{
+    font-family: "Helvetica";
+}
+.fontEquinox{
+    font-family: "EquinoxRegular" !important;
+}
+.fontEquinoxBold{
+    font-family: "EquinoxBold" !important;
+}
+h1{
+    margin-bottom: 60px;
+    font-weight: 300;
+    font-size: 36px;
+    font-family: EquinoxRegular;
+    position: relative;
+    &::before{
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        height: 3px;
+        width: 0;
+        border-radius: 10px;
+        transform: rotate(180deg);
+        transition: width 3000ms ease-out;
+        background: linear-gradient(90deg, $orange 0%, rgba(196, 196, 196, 0) 100%);
+    }
+}
+h2{
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+p{
+    font-weight: 200;
+    font-size: 16px;
+    line-height: 1.5rem;
+    color: rgb(216, 216, 216);
+}
+body{
+    min-width: 100vw;
+    min-height: 100vh;
+}
+.orange{
+    color: $orange !important;
+}
+.blue{
+    color: $blue !important;
+}
+.none{
+    display: none !important;
+}
+.mt-5{
+    margin-top: 1.5rem;
+}
+.mr-5{
+    margin-right: 1.5rem;
+}
+.mb-5{
+    margin-bottom: 1.5rem;
+}
+.ml-5{
+    margin-left: 1.5rem;
+}
+.bold{
+    font-weight: bold;
+}
+.regular{
+    font-weight: 300;
+}
+.blue{
+    color: $blue;
+}
+.white{
+    color: $white;
+}
+.customScrollBar{
+    overflow-x: hidden !important;
+    /* width */
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+  
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background-color: $black;   
+        border-radius: 5px;
+    }
+    
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        width: 4px;
+        position: relative;
+        left: 1px;
+        margin-left: 1px;
+        background-color: $blue;
+    }
+    
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: #ff6f61; 
+    }
+}
