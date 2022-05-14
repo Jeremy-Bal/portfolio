@@ -118,6 +118,7 @@ a{
 .homeOverlay{
     width: 90vw;
     margin: auto;
+    pointer-events: none;
     padding-top: 50px;
     opacity: 1;
     position: relative;
@@ -165,11 +166,9 @@ a{
         justify-content: flex-end;
         & > div{
             visibility: hidden;
+            pointer-events: all;
             transition: all 300ms ease;
             opacity: 0;
-        }
-        h3{
-      
         }
     }
 }
@@ -221,31 +220,45 @@ a{
     opacity: 0 !important;
     pointer-events: none;
 }
-.back{
+.menu{
+    position: absolute;
+    left: 80px;
+    z-index: 100;
+    top: 30px;
+    display: flex;
+    align-items: center;
+    hr{
+        height: 1px;
+        border: none;
+        opacity: 1;
+        width: 175px;
+        margin: 0 20px;
+        background-color: $orange;
+    }
     p{
         @extend .fontEquinox;
         color: $orange;
         font-weight: normal;
-        font-size: 20px;
-        position: absolute;
-        left: 50px;
-        z-index: 100;
-        top: 30px;
+        font-size: 14px;
+        margin-right: 25px;
         letter-spacing: 0.1rem;
-        &::before{
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 16px;
-            height: 2px;
-            background-color: $orange;
-            width: 80px;
-        }
-        span{
-            color: $orange;
-            font-size: 20px;
+    }
+    .back{
+        p{
+            @extend .fontEquinoxBold;
+            margin-right: 0;
+            span{
+                color: $orange;
+                font-size: 20px;
+                transform: translateY(2px);
+                display: inline-block;
+            }
         }
     }
+}
+.visited{
+    opacity: 0.3;
+    pointer-events: none;
 }
 .cloud{
     opacity: 0;
@@ -388,7 +401,7 @@ body section.showPage{
     position: absolute;
     left: 0;right: 0;bottom: 0;top: 0;
     background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0) 0%, #000000 100%);
-    z-index: 0;
+    z-index: 1;
     transition: all 3000ms ease;
     pointer-events: none;
     opacity: 0;

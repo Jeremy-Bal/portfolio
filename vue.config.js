@@ -17,11 +17,5 @@ module.exports = {
     .test(/\.glsl$/)
     .use('webpack-glsl-loader')
     .loader('webpack-glsl-loader')
-    
-    // config.module
-    //   .rule('json')
-    //   .test(/\.json$/)
-    //   .use('json-loader')
-    //   .loader('json-loader')
   }
 }

@@ -17,6 +17,11 @@ export default class TravelCamera
         this.mouseClick = new THREE.Vector2(10, 10)
         this.mouseHover = new THREE.Vector2(10, 10)
         this.finalPosition = new THREE.Vector3(0, 52, 92)
+        //cibles positions 
+        this.posCibleAsteroid = null
+        this.posCibleCloud= null
+        this.posCibleGalaxy = null
+
         this.text1 = null
         this.text2 = null
         this.text3 = null
@@ -24,6 +29,7 @@ export default class TravelCamera
         this.alreadyClear = false
         this.isShow = false
         this.isAlreadyActive = false   
+        this.isActiveMenu = false
         this.cursorRounded = document.querySelector('.rounded');
 
         this.setTitle()
@@ -31,9 +37,138 @@ export default class TravelCamera
         this.addBackground()
         this.travelCamera()
         this.setCursor()
+        this.menu()
 
         this.ressources.on("goForward", ()=>{
             this.travelCameraOnIntroducing()
+        })
+    }
+    menu()
+    {
+        const menu = document.querySelector(".menu")
+        menu.addEventListener('click', (e)=>{
+            console.log(this.isActiveMenu);
+            if(!this.isActiveMenu)
+            {
+                this.isActiveMenu = true
+                const data = e.target.dataset.cible
+                switch (data) {
+                    case "cloud":
+                        //Clear DOM
+                        document.querySelector('.visited').classList.remove('visited')
+                        document.querySelector('.menuCloud p').classList.add("visited")
+                        this.articles = document.querySelectorAll('.article')
+                            for (let i = 0; i < this.articles.length; i++) {
+                                const e = this.articles[i];
+                                e.classList.remove('show')
+                            }
+    
+                        window.document.querySelector('.showPage').classList.remove("showPage")
+    
+                        //Travel camera
+                        new TWEEN.Tween(this.experience.camera.instance.position)
+                        .to(this.posCibleCloud, 1500).easing(TWEEN.Easing.Exponential.InOut)
+                        .start()
+                        .onComplete(()=>{
+                            this.mouseClick.x = NaN
+                            this.mouseClick.y = NaN
+                            
+                            window.document.querySelector(".cloud").classList.add("showPage")
+                            this.isActiveMenu = false
+                            document.querySelector('.menu').classList.remove("remove")
+                            
+                            //Animation when page displayed
+                            const allArticle = document.querySelectorAll('.showPage .article')
+                            var t = 1500
+                            for (let i = 0; i < allArticle.length; i++) {
+                                const e = allArticle[i];
+                                this.setAnimationWhenPageDisplayed(e, t)
+                            
+                                t += 300
+                            }
+                        })
+    
+                    break;
+                    case "galaxy":
+                          //Clear DOM
+                          document.querySelector('.visited').classList.remove('visited')
+                          document.querySelector('.menuGalaxy p').classList.add("visited")
+                          this.articles = document.querySelectorAll('.article')
+                            for (let i = 0; i < this.articles.length; i++) {
+                                const e = this.articles[i];
+                                e.classList.remove('show')
+                            }
+      
+                          setTimeout(()=>{
+                              document.querySelector('.homeOverlay').classList.remove("remove")
+                          }, 300)
+                          window.document.querySelector('.showPage').classList.remove("showPage")
+      
+                          //Travel camera
+                          new TWEEN.Tween(this.experience.camera.instance.position)
+                          .to(this.posCibleGalaxy, 1500).easing(TWEEN.Easing.Exponential.InOut)
+                          .start()
+                          .onComplete(()=>{
+                              this.mouseClick.x = NaN
+                              this.mouseClick.y = NaN
+                              
+                              window.document.querySelector(".galaxy").classList.add("showPage")
+                              this.isActiveMenu = false
+                              document.querySelector('.menu').classList.remove("remove")
+                              
+                              //Animation when page displayed
+                              const allArticle = document.querySelectorAll('.showPage .article')
+                              var t = 1500
+                              for (let i = 0; i < allArticle.length; i++) {
+                                  const e = allArticle[i];
+                                  this.setAnimationWhenPageDisplayed(e, t)
+                              
+                                  t += 300
+                              }
+                          })
+                    break;
+                    case "asteroid":
+                          //Clear DOM
+                          document.querySelector('.visited').classList.remove('visited')
+                          document.querySelector('.menuAsteroid p').classList.add("visited")
+                          this.articles = document.querySelectorAll('.article')
+                            for (let i = 0; i < this.articles.length; i++) {
+                                const e = this.articles[i];
+                                e.classList.remove('show')
+                            }
+      
+                          setTimeout(()=>{
+                              document.querySelector('.homeOverlay').classList.remove("remove")
+                          }, 300)
+                          window.document.querySelector('.showPage').classList.remove("showPage")
+      
+                          //Travel camera
+                          new TWEEN.Tween(this.experience.camera.instance.position)
+                          .to(this.posCibleAsteroid, 1500).easing(TWEEN.Easing.Exponential.InOut)
+                          .start()
+                          .onComplete(()=>{
+                              this.mouseClick.x = NaN
+                              this.mouseClick.y = NaN
+                              
+                              window.document.querySelector(".asteroid").classList.add("showPage")
+                              this.isActiveMenu = false
+                              document.querySelector('.menu').classList.remove("remove")
+                              
+                              //Animation when page displayed
+                              const allArticle = document.querySelectorAll('.showPage .article')
+                              var t = 1500
+                              for (let i = 0; i < allArticle.length; i++) {
+                                  const e = allArticle[i];
+                                  this.setAnimationWhenPageDisplayed(e, t)
+                              
+                                  t += 300
+                              }
+                          })
+                    break;
+                    default:
+                        break;
+                }
+            }
         })
     }
     travelCameraOnIntroducing()
@@ -44,7 +179,9 @@ export default class TravelCamera
             .to(this.finalPosition, 1500)
             .easing(TWEEN.Easing.Exponential.InOut)
             .start()
-            .onComplete(()=>{})
+            .onComplete(()=>{
+                this.experience.camera.instance.far = 250
+            })
         }, 500)
     }
     setCursor()
@@ -82,7 +219,7 @@ export default class TravelCamera
         })
         this.fontLoader.load("EquinoxBold_Regular.json", 
             (file) => {
-                const geometryText1 = new TextGeometry("J'aIME LE PaTHE", {
+                const geometryText1 = new TextGeometry("J'aIME LEs noix", {
                     font: file,
                     size: 5,
                     height: 0.05,
@@ -156,7 +293,7 @@ export default class TravelCamera
         this.asteroidCible = new THREE.Mesh(asteroidCibleGeometry, material)
         this.galaxyCible = new THREE.Mesh(galaxyCibleGeometry, material)
         this.cloudCible = new THREE.Mesh(cloudCibleGeometry, material)
-
+        
         this.asteroidCible.visible = false
         this.galaxyCible.visible = false
         this.cloudCible.visible = false
@@ -164,10 +301,27 @@ export default class TravelCamera
         this.asteroidCible.name = "asteroidCible"
         this.galaxyCible.name = "galaxyCible"
         this.cloudCible.name = "cloudCible"
-
+        
         this.asteroidCible.position.set(-112, 0, 0)
         this.galaxyCible.position.set(0, -10, 0)
         this.cloudCible.position.set(117, 0, -10)
+
+        this.posCibleAsteroid = this.asteroidCible.position.clone()
+        this.posCibleCloud= this.cloudCible.position.clone()
+        this.posCibleGalaxy = this.galaxyCible.position.clone()
+        
+        this.posCibleAsteroid.x -= 40
+        this.posCibleAsteroid.y += 10
+        this.posCibleAsteroid.z += 20
+
+        this.posCibleCloud.x -= 20
+        this.posCibleCloud.y += 15
+        this.posCibleCloud.z += 28
+
+        this.posCibleGalaxy.x += 10
+        this.posCibleGalaxy.y += 1
+        this.posCibleGalaxy.z += 20
+
         this.backgroundPosition = new THREE.Vector3(-41, 0, -85)
         
         this.scene.add(this.asteroidCible, this.galaxyCible, this.cloudCible)
@@ -187,35 +341,38 @@ export default class TravelCamera
         const goBack = document.querySelector('.back')
         goBack.addEventListener('click', (e)=>{
             e.stopPropagation()
-            this.isShow = false
-
-            //remove text menu
-            this.text1.visible = true
-            this.text2.visible = true
-            this.text3.visible = true
-
-            //Clear DOM
-            document.querySelector('.homeOverlay').classList.remove("none")
-            document.querySelector('.back').classList.add("remove")
-            setTimeout(()=>{
-                document.querySelector('.homeOverlay').classList.remove("remove")
-            }, 300)
-            window.document.querySelector('.showPage').classList.remove("showPage")
-            
-            
-            //Camera position to initial
-            const tweenRevert = new TWEEN.Tween(this.experience.camera.instance.position)
-            tweenRevert.to(this.finalPosition, 1500)
-            .easing(TWEEN.Easing.Exponential.InOut)
-            .start()
-            .onComplete(()=>{
-                this.isAlreadyActive = false
-                const articles = document.querySelectorAll('.article')
-                for (let i = 0; i < articles.length; i++) {
-                    const e = articles[i];
-                    e.classList.remove('show')
-                }
-            })
+            if(!this.isActiveMenu)
+            {
+                this.isShow = false
+    
+                //remove text menu
+                this.text1.visible = true
+                this.text2.visible = true
+                this.text3.visible = true
+    
+                //Clear DOM
+                document.querySelector('.visited').classList.remove('visited')
+                document.querySelector('.homeOverlay').classList.remove("none")
+                document.querySelector('.menu').classList.add("remove")
+                setTimeout(()=>{
+                    document.querySelector('.homeOverlay').classList.remove("remove")
+                }, 300)
+                window.document.querySelector('.showPage').classList.remove("showPage")
+                
+                //Camera position to initial
+                const tweenRevert = new TWEEN.Tween(this.experience.camera.instance.position)
+                tweenRevert.to(this.finalPosition, 1500)
+                .easing(TWEEN.Easing.Exponential.InOut)
+                .start()
+                .onComplete(()=>{
+                    this.isAlreadyActive = false
+                    const articles = document.querySelectorAll('.article')
+                    for (let i = 0; i < articles.length; i++) {
+                        const e = articles[i];
+                        e.classList.remove('show')
+                    }
+                })
+            }
         })
     }
     addBackground()
@@ -388,12 +545,14 @@ export default class TravelCamera
                         posCible.x -= 30
                         posCible.y += 15
                         domPage = window.document.querySelector(".asteroid")
+                        document.querySelector('.menuAsteroid p').classList.add("visited")
                     break;
 
                     case "galaxyCible":
                         posCible.y += 1
                         posCible.x += 10
                         domPage = window.document.querySelector(".galaxy")
+                        document.querySelector('.menuGalaxy p').classList.add("visited")
                     break;   
                         
                     case "cloudCible":
@@ -401,6 +560,7 @@ export default class TravelCamera
                         posCible.y += 15
                         posCible.z += 5
                         domPage = window.document.querySelector(".cloud")
+                        document.querySelector('.menuCloud p').classList.add("visited")
                     break
 
                     default:
@@ -418,7 +578,7 @@ export default class TravelCamera
                     this.mouseClick.y = NaN
                     
                     domPage.classList.add("showPage")
-                    document.querySelector('.back').classList.remove("remove")
+                    document.querySelector('.menu').classList.remove("remove")
                     
                     //Animation when page displayed
                     const allArticle = document.querySelectorAll('.showPage .article')

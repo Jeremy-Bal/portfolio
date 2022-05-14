@@ -42,7 +42,7 @@
     <MyScene />
     <section class="cloud">
       <div class="container customScrollBar">
-        <h1>Hello world baguette PREMIERE</h1>
+        <h1>Hello world baguette CLOUD</h1>
         <div class="article">
           <h2 class="orange">Ce que j'aime</h2>
           <p class="p18">
@@ -78,7 +78,7 @@
     </section>
     <section class="asteroid">
       <div class="container customScrollBar">
-        <h1>Hello world baguette PREMIERE</h1>
+        <h1>Hello world baguette ASTEROID</h1>
         <div class="article">
           <h2 class="orange">Ce que j'aime</h2>
           <p class="p18">
@@ -114,7 +114,7 @@
     </section>
     <section class="galaxy">
       <div class="container customScrollBar">
-        <h1>Hello world baguette PREMIERE</h1>
+        <h1>Hello world baguette GALAXY</h1>
         <div class="article">
           <h2 class="orange">Ce que j'aime</h2>
           <p class="p18">
