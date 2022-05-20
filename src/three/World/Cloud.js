@@ -12,6 +12,7 @@ export default class Cloud
         this.time = this.experience.time
         this.camera = this.experience.camera
         this.debug = this.experience.debug.ui
+        this.mobileDisplay = this.experience.mobileDisplay
 
         this.parameter = {}
         this.parameter.count = 50
@@ -19,12 +20,14 @@ export default class Cloud
         this.parameter.cloud2 = this.experience.ressources.items.cloudTexture2
         this.parameter.flashPosition = new Vector3(60, 3, -10)
 
+        this.mobilePosition = new Vector3(0)
         this.clouds = []
-
+        this.lights = []
         this.flashLight = null
 
         this.generateCloud()
         this.generateLight()
+        this.resize()
     }
     generateCloud()
     {
@@ -51,7 +54,6 @@ export default class Cloud
                 cloudMesh.rotation.x = -0.432;
                 if(i === 0)
                 {
-                    // x: 60 now 120 SET LIGHT
                     cloudMesh.position.set(120, 5, -10)
                 }
                 if(i === 1)
@@ -62,7 +64,6 @@ export default class Cloud
                 {
                     cloudMesh.position.set(118, 0, -10)                    
                 }
-                //cloudMesh.rotation.y = -0.05;
                 cloudMesh.rotation.z = Math.random() * 2 * Math.PI;
 
                 this.clouds.push(cloudMesh)
@@ -83,7 +84,6 @@ export default class Cloud
                 cloudMesh.position.y =  Math.cos(branchAngle) * radius
                 cloudMesh.position.z = Math.random() * 0.5
 
-                //cloudMesh.rotation.y = -0.05;
                 cloudMesh.rotation.z = Math.random() * 2 * Math.PI;
 
                 this.clouds.push(cloudMesh)
@@ -121,43 +121,65 @@ export default class Cloud
     {
         const ambientLight = new THREE.AmbientLight("#000000", 1.4)
         ambientLight.position.set(60, 2, 50)
+        this.lights.push(ambientLight)
         this.scene.add(ambientLight)
-        
+
         const redLight = new THREE.PointLight("#d92b0d", 6, 3000 , 10.6);
         redLight.position.set(55, -3, 11.9);
+        this.lights.push(redLight)
         this.scene.add(redLight);
-        
+
         this.flashLight = new THREE.PointLight("#ffffff", 300, 1000, 4);
         this.flashLight.position.set(this.parameter.flashPosition.x, this.parameter.flashPosition.y, this.parameter.flashPosition.z);
+        this.lights.push(this.flashLight)
         this.scene.add(this.flashLight)
         
         const blueLight = new THREE.PointLight("#2049c5", 1.7, 4500, 1.7);
         blueLight.position.set(70, 2, 55);
+        this.lights.push(blueLight)
         this.scene.add(blueLight);
-        
-        this.debug.add(blueLight.position, 'x').min(-50).max(50).step(0.0001).name('Test light x')
-        this.debug.add(blueLight.position, 'y').min(0).max(50).step(0.0001).name('Test light y')
-        this.debug.add(blueLight.position, 'z').min(-50).max(50).step(0.0001).name('Test light z')
-    
-        this.debug.add(redLight.position, 'x').min(-50).max(50).step(0.0001).name('redLight light x')
-        this.debug.add(redLight.position, 'y').min(0).max(50).step(0.0001).name('redLight light y')
-        this.debug.add(redLight.position, 'z').min(-50).max(50).step(0.0001).name('redLight light z')
-        
-        this.debug.add(this.flashLight, 'distance').min(0).max(100).step(0.0001).name('Test distance')
-        this.debug.add(this.flashLight, 'decay').min(0).max(10).step(0.0001).name('Test deca')
-        //this.debug.add(this.flashLight, 'power').min(0).max(100).step(0.0001).name('Test power')
-        this.debug.add(this.flashLight, 'intensity').min(0).max(300).step(0.0001).name('Test intenrsity')
-        this.debug.addColor(this.flashLight, 'color').onChange(()=>{
-            this.flashLight.color.set(this.flashLight.color)
-        }).name("this.flashLight")
-        this.debug.addColor(redLight, 'color').onChange(()=>{
-            redLight.color.set(redLight.color)
-        }).name("firstLigth") 
-        this.debug.addColor(blueLight, 'color').onChange(()=>{
-            blueLight.color.set(blueLight.color)
-        }).name("blueLight")
     }
 
+    resize()
+    {
+        this.mobileDisplay = window.innerWidth < 800 ? true : false
+        if(this.mobileDisplay && this.mobilePosition.x >= 0)
+        {
+            //add value for each clouds and lights in position for displayed it on column
+            this.mobilePosition = new Vector3(-105, -90, 45)
+            this.clouds.forEach(cloud => {
+                cloud.position.x += this.mobilePosition.x
+                cloud.position.y += this.mobilePosition.y
+                cloud.position.z += this.mobilePosition.z
+            });
+            this.lights.forEach(light => {
+                light.position.x += this.mobilePosition.x
+                light.position.y += this.mobilePosition.y
+                light.position.z += this.mobilePosition.z
+            })
+            this.parameter.flashPosition.x += this.mobilePosition.x
+            this.parameter.flashPosition.y += this.mobilePosition.y
+        }
+        else if(!this.mobileDisplay && this.mobilePosition.x < 0)
+        {
+            //add value for each clouds and lights in position for displayed it on row
+            this.mobilePosition = new Vector3(105, 90, -60)
+
+            this.clouds.forEach(cloud => {
+                cloud.position.x += this.mobilePosition.x
+                cloud.position.y += this.mobilePosition.y
+                cloud.position.z += this.mobilePosition.z
+            });
+            this.lights.forEach(light => {
+                light.position.x += this.mobilePosition.x
+                light.position.y += this.mobilePosition.y
+                light.position.z += this.mobilePosition.z
+            })
+            this.parameter.flashPosition.x += this.mobilePosition.x
+            this.parameter.flashPosition.y += this.mobilePosition.y
+            this.parameter.flashPosition.z += this.mobilePosition.z
+        }
+    }
     update()
     {
         const randomFlash = Math.random()

@@ -13,6 +13,7 @@ p{
 }
 body{
     cursor: none !important;
+    overflow: hidden;
 }
 a{
     cursor: none !important;
@@ -22,7 +23,7 @@ a{
 }
 .rounded{
     pointer-events: none;
-    position: absolute;
+    position: fixed;
     width: 20px;
     z-index: 10000;
     height: 40px;
@@ -59,6 +60,7 @@ a{
     position: fixed;
     z-index: -1;
     left: 0;
+    display: block;
     top: 0;
     width: 100vw !important;
     height: 100vh !important;
@@ -460,6 +462,17 @@ body section.showPage{
             border-radius: 10px;
             right: 0;
             top: 0;
+        }
+    }
+}
+
+@media (max-width: 800px) {
+    body{
+        height: 1750px;
+        overflow: visible;
+        #app{
+            position: fixed;
+            top: 0;bottom: 0;right: 0;left: 0;
         }
     }
 }

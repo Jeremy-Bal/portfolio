@@ -33,6 +33,7 @@ export default class Experience
         this.camera = new Camera()
         this.renderer = new Renderer()
         this.world = new World()
+        this.mobileDisplay = window.innerWidth < 800 ? true : false
         
         //FOG
         this.scene.fog = new THREE.Fog("#212254", 1, 314)
@@ -48,17 +49,18 @@ export default class Experience
         {
             this.resize()
         })
-
+        
         //Tick Event
         this.time.on('tick', ()=>{
             this.update()
         })
-
+        
     }
     resize()
     {
         this.camera.resize()
         this.renderer.resize()
+        this.world.resize()
     }
     update()
     {

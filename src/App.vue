@@ -167,6 +167,16 @@
 </template>
 
 <script>
+window.addEventListener('load', ()=>{
+  window.scroll(0, 0)
+  console.log("load");
+})
+window.addEventListener('DOMContentLoaded', ()=>{
+  window.scroll(0, 0)
+  console.log("DOMload");
+})
+  console.log("OUT");
+  window.scroll(0, 0)
 // @ is an alias to /src
 import MyScene from '@/components/MyScene.vue'
 import Experience from './three/Experience'
@@ -178,6 +188,7 @@ export default {
   mounted(){
     window.addEventListener('DOMContentLoaded', function(){
       console.log("COMPUYTED ",window.document.querySelector('canvas.webgl')) 
+      document.documentElement.scrollTop = 0;
       new Experience(window.document.querySelector('canvas.webgl')) 
     })
   }

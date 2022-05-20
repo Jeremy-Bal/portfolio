@@ -28,6 +28,21 @@ export default class World
             this.update()
         })
     }
+
+    resize()
+    {
+        this.experience.mobileDisplay = window.innerWidth < 800 ? true : false
+
+        if(this.galaxy && this.cloud && this.asteroide && this.travelCamera && this.stars)
+        {
+            this.cloud.resize()
+            this.asteroide.resize()
+            this.travelCamera.resize()
+            this.stars.resize()
+            // this.galaxy.resize()
+        }
+    }
+    
     update()
     {
         if(this.galaxy && this.cloud && this.asteroide && this.travelCamera && this.stars)

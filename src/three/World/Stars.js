@@ -13,6 +13,7 @@ export default class Stars
         this.time = this.experience.time
         this.renderer = this.experience.renderer
         this.debug = this.experience.debug.ui
+        this.mobileDisplay = this.experience.mobileDisplay
 
         this.parameters = {}
         this.parameters.count = 30000
@@ -30,16 +31,31 @@ export default class Stars
         //const colors = new  Float32Array(this.parameters.count * 3)
         const scales = new Float32Array(this.parameters.count)
 
-
-        for(let i = 0; i < this.parameters.count; i++)
+        //set the position for mobile or desktop
+        if(this.mobileDisplay)
         {
-            const i3 = i * 3
-
-            positions[i3 + 0] = (Math.random() - 0.5) * 500
-            positions[i3 + 1] = (Math.random() - 0.2) * 200
-            positions[i3 + 2] = (Math.random() - 0.15) * 500
-
-            scales[i] = (Math.random() + 3) * 2
+            for(let i = 0; i < this.parameters.count; i++)
+            {
+                const i3 = i * 3
+    
+                positions[i3 + 0] = (Math.random() - 0.5) * 400
+                positions[i3 + 1] = (Math.random() - 0.5) * 600
+                positions[i3 + 2] = (Math.random() - 0.15) * 500
+    
+                scales[i] = (Math.random() + 3) * 2
+            }
+        }
+        else{
+            for(let i = 0; i < this.parameters.count; i++)
+            {
+                const i3 = i * 3
+    
+                positions[i3 + 0] = (Math.random() - 0.5) * 500
+                positions[i3 + 1] = (Math.random() - 0.2) * 200
+                positions[i3 + 2] = (Math.random() - 0.15) * 500
+    
+                scales[i] = (Math.random() + 3) * 2
+            }
         }
         
         this.geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3))
@@ -58,16 +74,42 @@ export default class Stars
                 uPixelRatio : { value: this.renderer.instance.getPixelRatio()},
             }
         })
+
         /* 
         * Add random test value for shader
         */
-
         this.experience.debug.ui.add(material.uniforms.uTest.value, 'x').min(2).max(10).step(0.0001).name('Test value x')
         this.experience.debug.ui.add(material.uniforms.uTest.value, 'y').min(-10).max(10).step(0.0001).name('Test value y')
         this.experience.debug.ui.add(material.uniforms.uTest.value, 'z').min(-10).max(10).step(0.0001).name('Test value z')
         
-        const point = new THREE.Points(this.geometry, material)
-        
-        this.scene.add(point)
+        this.point = new THREE.Points(this.geometry, material)
+
+        //set a name for apply resize function one time per step
+        if (this.mobileDisplay) {
+            this.point.name = "mobile"
+        }else{
+            this.point.name = "desktop"
+        }
+
+        this.scene.add(this.point)
+    }
+    resize()
+    {
+        this.mobileDisplay = window.innerWidth < 800 ? true : false
+
+        if(this.mobileDisplay && this.point.name === "desktop")
+        {
+            this.point.geometry.dispose();
+            this.point.material.dispose();
+            this.scene.remove( this.point );
+            this.setStars()
+        }
+        else if(!this.mobileDisplay && this.point.name === "mobile")
+        {
+            this.point.geometry.dispose();
+            this.point.material.dispose();
+            this.scene.remove( this.point );
+            this.setStars()
+        }
     }
 }

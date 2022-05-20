@@ -36,15 +36,33 @@ export default class Renderer
         this.instance.toneMapping = THREE.LinearToneMapping;
         this.instance.setClearColor('#000000')
         this.instance.setSize(this.sizes.width, this.sizes.height)
-        this.instance.setPixelRatio(this.sizes.pixelRatio)
+        //this.instance.setPixelRatio(this.sizes.pixelRatio)
     }
     resize()
     {
         this.instance.setSize(this.sizes.width, this.sizes.height)
-        this.instance.setPixelRatio(this.sizes.pixelRatio)
+        //this.instance.setPixelRatio(this.sizes.pixelRatio)
+
     }
+    resizeRendererToDisplaySize(renderer) {
+        const canvas = renderer.domElement;
+        const pixelRatio = window.devicePixelRatio;
+        const width  = canvas.clientWidth  * pixelRatio | 0;
+        const height = canvas.clientHeight * pixelRatio | 0;
+        const needResize = canvas.width !== width || canvas.height !== height;
+        if (needResize) {
+        
+          renderer.setSize(width, height, false);
+        }
+        return needResize;
+      }
     update()
     {
+        if (this.resizeRendererToDisplaySize(this.instance)) {
+            const canvas = this.instance.domElement;
+            this.camera.instance.aspect = canvas.clientWidth / canvas.clientHeight;
+            this.camera.instance.updateProjectionMatrix();
+        }
         this.instance.render(this.scene, this.camera.instance)
     }
 }

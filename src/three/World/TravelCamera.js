@@ -3,6 +3,7 @@ import Experience from "../Experience"
 import * as TWEEN from 'tween'
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
+import { Vector3 } from "three"
 
 export default class TravelCamera
 {
@@ -11,13 +12,15 @@ export default class TravelCamera
         this.experience = new Experience()
         this.scene = this.experience.scene
         this.ressources = this.experience.ressources
+        this.mobileDisplay = this.experience.mobileDisplay
         this.time = this.experience.time
         this.debug = this.experience.debug.ui
         this.fontLoader = new FontLoader()
-        this.mouseClick = new THREE.Vector2(10, 10)
-        this.mouseHover = new THREE.Vector2(10, 10)
-        this.finalPosition = new THREE.Vector3(0, 52, 92)
-        //cibles positions 
+
+        this.mouseClick = new THREE.Vector2(10000, 10000)
+        this.mouseHover = new THREE.Vector2(10000, 10000)
+
+        //cibles positions for travel camera on click
         this.posCibleAsteroid = null
         this.posCibleCloud= null
         this.posCibleGalaxy = null
@@ -25,6 +28,7 @@ export default class TravelCamera
         this.text1 = null
         this.text2 = null
         this.text3 = null
+
         this.previousObject = null
         this.alreadyClear = false
         this.isShow = false
@@ -38,6 +42,7 @@ export default class TravelCamera
         this.travelCamera()
         this.setCursor()
         this.menu()
+        this.resize()
 
         this.ressources.on("goForward", ()=>{
             this.travelCameraOnIntroducing()
@@ -173,14 +178,16 @@ export default class TravelCamera
     }
     travelCameraOnIntroducing()
     {
+        console.log(this.finalPositionIntroducing);
         //init position
         setTimeout(()=>{
             new TWEEN.Tween(this.experience.camera.instance.position)
-            .to(this.finalPosition, 1500)
+            .to(this.finalPositionIntroducing, 1500)
             .easing(TWEEN.Easing.Exponential.InOut)
             .start()
             .onComplete(()=>{
                 this.experience.camera.instance.far = 250
+                window.scroll(0, 0)
             })
         }, 500)
     }
@@ -219,7 +226,7 @@ export default class TravelCamera
         })
         this.fontLoader.load("EquinoxBold_Regular.json", 
             (file) => {
-                const geometryText1 = new TextGeometry("J'aIME LEs noix", {
+                const geometryText1 = new TextGeometry("zadjkazdbkjzadjkbzakjdbazdjbzadjkbdza", {
                     font: file,
                     size: 5,
                     height: 0.05,
@@ -236,8 +243,8 @@ export default class TravelCamera
 
                 this.text1.rotation.x = -0.432;
                 this.scene.add(this.text1)
-            
-                const geometryText2 = new TextGeometry("j'aime le frites", {
+                
+                const geometryText2 = new TextGeometry("BaGUETTE", {
                     font: file,
                     size: 4.5,
                     height: 0.05,
@@ -274,9 +281,11 @@ export default class TravelCamera
                 this.text3.clonePosition = this.text3.position.clone()
 
                 this.scene.add(this.text3)
+
+                this.resize()
             }
         )
-
+   
     }
 
     addObjectToIntersect()
@@ -302,12 +311,20 @@ export default class TravelCamera
         this.galaxyCible.name = "galaxyCible"
         this.cloudCible.name = "cloudCible"
         
-        this.asteroidCible.position.set(-112, 0, 0)
-        this.galaxyCible.position.set(0, -10, 0)
-        this.cloudCible.position.set(117, 0, -10)
-
+        //*Cible is the target for raycaster
+        if(this.mobileDisplay)
+        {
+            this.asteroidCible.position.set(0, -200, 70)
+            this.galaxyCible.position.set(0, -10, 0)
+            this.cloudCible.position.set(0, -120, -13)
+        }else{
+            this.asteroidCible.position.set(-112, 0, 0)
+            this.galaxyCible.position.set(0, -10, 0)
+            this.cloudCible.position.set(117, 0, -10)
+        }
+        //postion cible is the final postion when you click on an target 
         this.posCibleAsteroid = this.asteroidCible.position.clone()
-        this.posCibleCloud= this.cloudCible.position.clone()
+        this.posCibleCloud = this.cloudCible.position.clone()
         this.posCibleGalaxy = this.galaxyCible.position.clone()
         
         this.posCibleAsteroid.x -= 40
@@ -330,6 +347,7 @@ export default class TravelCamera
     travelCamera()
     {
         window.addEventListener("click", (e)=>{
+            console.log("click");
             this.mouseClick.x = e.clientX / this.experience.renderer.sizes.width * 2 - 1
             this.mouseClick.y = - (e.clientY / this.experience.renderer.sizes.height) * 2 + 1
         })
@@ -361,7 +379,7 @@ export default class TravelCamera
                 
                 //Camera position to initial
                 const tweenRevert = new TWEEN.Tween(this.experience.camera.instance.position)
-                tweenRevert.to(this.finalPosition, 1500)
+                tweenRevert.to(this.finalPositionIntroducing, 1500)
                 .easing(TWEEN.Easing.Exponential.InOut)
                 .start()
                 .onComplete(()=>{
@@ -400,7 +418,7 @@ export default class TravelCamera
     }
     fadeColorTitle(mesh, clearMesh, clearMesh2)
     {
-        if(mesh){
+        if(mesh && !this.mobileDisplay){
             //Add new color
             let alpha = {x: 1, y:0}
             let reverseAlpha = {x: 1, y:0}
@@ -417,7 +435,6 @@ export default class TravelCamera
             //Move forward title
             const tweenForward = new TWEEN.Tween(mesh.position)
             tweenForward.to({z: -15}, 300).easing(TWEEN.Easing.Exponential.InOut).start()
-            
             const tweenScale = new TWEEN.Tween(mesh.scale)
             tweenScale.to({x: 1.5, y: 1.5, z: 1.5}, 300).easing(TWEEN.Easing.Exponential.InOut).start()
 
@@ -435,7 +452,7 @@ export default class TravelCamera
             const tweenScaleRevert = new TWEEN.Tween(clearMesh.scale, clearMesh2.scale)
             tweenScaleRevert.to({x: 1, y: 1, z: 1}, 300).easing(TWEEN.Easing.Exponential.InOut).start()
         }
-        else if(!mesh && this.previousObject && !this.alreadyClear)
+        else if(!mesh && this.previousObject && !this.alreadyClear && !this.mobileDisplay)
         {
             //Clear color by default
             let reverseAlpha = {x: 0, y:0}
@@ -457,22 +474,121 @@ export default class TravelCamera
             tweenScaleRevert.to({x: 1, y: 1, z: 1}, 300).easing(TWEEN.Easing.Exponential.InOut).start()
         }
     }
+
     setAnimationWhenPageDisplayed(e, t)
     {
         setTimeout(()=>{
             e.classList.add('show')
         }, t)
     }
+
+    resize()
+    {
+        this.mobileDisplay = window.innerWidth < 800 ? true : false
+        if(this.mobileDisplay)
+        {
+            this.finalPositionIntroducing = window.innerWidth > 800 ? new THREE.Vector3(0, 52, 92) : new Vector3(0, -7, 28)
+
+            //update rayscater targets
+            this.asteroidCible.position.set(0, -200, 70)
+            this.galaxyCible.position.set(0, -10, 0)
+            this.cloudCible.position.set(0, -120, -13)
+
+            this.posCibleAsteroid = this.asteroidCible.position.clone()
+            this.posCibleCloud = this.cloudCible.position.clone()
+            this.posCibleGalaxy = this.galaxyCible.position.clone()
+            
+            this.posCibleAsteroid.x -= 40
+            this.posCibleAsteroid.y += 10
+            this.posCibleAsteroid.z += 20
+
+            this.posCibleCloud.x -= 20
+            this.posCibleCloud.y += 15
+            this.posCibleCloud.z += 28
+
+            this.posCibleGalaxy.x += 10
+            this.posCibleGalaxy.y += 1
+            this.posCibleGalaxy.z += 20
+
+            //update size title
+            if (this.text1 && this.text2 && this.text3)
+            {
+                this.text1.scale.set(0.3, 0.3, 0.3)
+                this.text1.position.x -= 10
+                this.text1.position.y = -20
+                
+                this.text2.scale.set(0.3, 0.3, 0.3)
+                this.text2.position.x = 0
+                this.text2.position.y = -169
+                this.text2.position.z = 150
+
+                this.text3.scale.set(0.3, 0.3, 0.3)
+                this.text3.position.x = 0
+                this.text3.position.y = -75
+                this.text3.position.z = 52
+
+                //debug
+                this.experience.debug.ui.add(this.text2.position, "x").min(-200).max(200).step(1).name('cibleCloudx')
+                this.experience.debug.ui.add(this.text2.position, "y").min(-200).max(200).step(1).name('cibleCloud y')
+                this.experience.debug.ui.add(this.text2.position, "z").min(-200).max(200).step(1).name('cibleCloud z')
+            }
+        }
+        else if(!this.mobileDisplay)
+        {
+            //add value for each clouds and lights in position for displayed it on row
+            this.finalPositionIntroducing = new THREE.Vector3(0, 52, 92)
+            
+            //update rayscater targets
+            this.asteroidCible.position.set(-112, 0, 0)
+            this.galaxyCible.position.set(0, -10, 0)
+            this.cloudCible.position.set(117, 0, -10)
+            
+            this.posCibleAsteroid = this.asteroidCible.position.clone()
+            this.posCibleCloud = this.cloudCible.position.clone()
+            this.posCibleGalaxy = this.galaxyCible.position.clone()
+            
+            this.posCibleAsteroid.x -= 40
+            this.posCibleAsteroid.y += 10
+            this.posCibleAsteroid.z += 20
+        
+            this.posCibleCloud.x -= 20
+            this.posCibleCloud.y += 15
+            this.posCibleCloud.z += 28
+        
+            this.posCibleGalaxy.x += 10
+            this.posCibleGalaxy.y += 1
+            this.posCibleGalaxy.z += 20
+
+            if (this.text1 && this.text2 && this.text3)
+            {
+                this.text1.scale.set(0.8, 0.8, 0.8)
+                this.text1.position.set(-10, -80, -20)
+                this.text1.clonePosition = this.text1.position.clone()
+                
+                this.text2.scale.set(0.8, 0.8, 0.8)
+                this.text2.position.set(-130, 30, -20)
+                this.text2.clonePosition = this.text2.position.clone()
+                
+                this.text3.scale.set(0.8, 0.8, 0.8)
+                this.text3.position.set(90, 30, -20)
+                this.text3.clonePosition = this.text3.position.clone()
+            }
+        }
+    }
+
     update()
     {   
         //SMOOTH ANIMATION FOR TITLES
         if(this.text1 && this.text2 && this.text3)
         {
             const t = this.time.elapsed * 0.000005
-        
-            this.text1.position.y = (Math.cos(this.text1.clonePosition.y + t * 100) * 2) + -10
-            this.text2.position.y = (Math.sin(this.text2.clonePosition.y + t * 100) * 2) + 20
-            this.text3.position.y = (Math.sin(this.text3.clonePosition.y + t * 100) * 2) + 20
+            
+            if(!this.mobileDisplay)
+            {
+                this.text1.position.y = (Math.cos(this.text1.clonePosition.y + t * 100) * 2) + -10
+                this.text2.position.y = (Math.sin(this.text2.clonePosition.y + t * 100) * 2) + 20
+                this.text3.position.y = (Math.sin(this.text3.clonePosition.y + t * 100) * 2) + 20
+            }
         }
         //RAYCASTER
         this.raycaster.setFromCamera(this.mouseClick, this.experience.camera.instance)
@@ -567,9 +683,11 @@ export default class TravelCamera
                     break;
                 }
                 //Hide text menu
-                this.text1.visible = false
-                this.text2.visible = false
-                this.text3.visible = false
+                if (this.text1 && this.text2 && this.text3) {
+                    this.text1.visible = false
+                    this.text2.visible = false
+                    this.text3.visible = false
+                }
 
                 //Travel camera
                 const tween = new TWEEN.Tween(this.experience.camera.instance.position)
