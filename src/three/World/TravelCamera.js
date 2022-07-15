@@ -36,13 +36,15 @@ export default class TravelCamera
         this.isActiveMenu = false
         this.cursorRounded = document.querySelector('.rounded');
 
+        //responsive 
+        this.finalPositionIntroducing = new Vector3()
+
         this.setTitle()
         this.addObjectToIntersect()
         this.addBackground()
         this.travelCamera()
         this.setCursor()
         this.menu()
-        this.resize()
 
         this.ressources.on("goForward", ()=>{
             this.travelCameraOnIntroducing()
@@ -194,8 +196,6 @@ export default class TravelCamera
     setCursor()
     {
         const moveCursor = (e)=> {
-            const mouseY = e.clientY;
-            const mouseX = e.clientX;
             this.mouseHover.x = e.clientX / this.experience.renderer.sizes.width * 2 - 1
             this.mouseHover.y = - (e.clientY / this.experience.renderer.sizes.height) * 2 + 1
             if(e.target.classList.contains('cursor')){
@@ -204,7 +204,10 @@ export default class TravelCamera
             else if(this.cursorRounded.classList.contains('cursor')){
                 this.cursorRounded.classList.remove('cursor')
             }
-            this.cursorRounded.style.transform = `translate3d(${mouseX - 10}px, ${mouseY - 12}px, 0)`;
+            this.cursorRounded.style.transform = `
+                translate3d(calc(${e.clientX}px + 7px - 50%),
+                calc(${e.clientY}px + 6px - 50%),
+                0)`;
         }
 
         this.hoverRaycaster = new THREE.Raycaster()
@@ -226,7 +229,7 @@ export default class TravelCamera
         })
         this.fontLoader.load("EquinoxBold_Regular.json", 
             (file) => {
-                const geometryText1 = new TextGeometry("zadjkazdbkjzadjkbzakjdbazdjbzadjkbdza", {
+                const geometryText1 = new TextGeometry("viva la frita", {
                     font: file,
                     size: 5,
                     height: 0.05,
@@ -347,9 +350,11 @@ export default class TravelCamera
     travelCamera()
     {
         window.addEventListener("click", (e)=>{
-            console.log("click");
-            this.mouseClick.x = e.clientX / this.experience.renderer.sizes.width * 2 - 1
-            this.mouseClick.y = - (e.clientY / this.experience.renderer.sizes.height) * 2 + 1
+            if(document.querySelector('.loadingScreen').classList.contains('remove'))
+            {
+                this.mouseClick.x = e.clientX / this.experience.renderer.sizes.width * 2 - 1
+                this.mouseClick.y = - (e.clientY / this.experience.renderer.sizes.height) * 2 + 1
+            }
         })
         
         this.raycaster = new THREE.Raycaster()
@@ -359,6 +364,7 @@ export default class TravelCamera
         const goBack = document.querySelector('.back')
         goBack.addEventListener('click', (e)=>{
             e.stopPropagation()
+            console.log("click");
             if(!this.isActiveMenu)
             {
                 this.isShow = false
@@ -377,19 +383,34 @@ export default class TravelCamera
                 }, 300)
                 window.document.querySelector('.showPage').classList.remove("showPage")
                 
-                //Camera position to initial
-                const tweenRevert = new TWEEN.Tween(this.experience.camera.instance.position)
-                tweenRevert.to(this.finalPositionIntroducing, 1500)
-                .easing(TWEEN.Easing.Exponential.InOut)
-                .start()
-                .onComplete(()=>{
+                if(this.mobileDisplay)
+                {
                     this.isAlreadyActive = false
+
+                    document.querySelector('html').style.overflowY = 'visible'
+
                     const articles = document.querySelectorAll('.article')
                     for (let i = 0; i < articles.length; i++) {
                         const e = articles[i];
                         e.classList.remove('show')
                     }
-                })
+                }
+                else
+                {
+                    //Camera position to initial
+                    const tweenRevert = new TWEEN.Tween(this.experience.camera.instance.position)
+                    tweenRevert.to(this.finalPositionIntroducing, 1500)
+                    .easing(TWEEN.Easing.Exponential.InOut)
+                    .start()
+                    .onComplete(()=>{
+                        this.isAlreadyActive = false
+                        const articles = document.querySelectorAll('.article')
+                        for (let i = 0; i < articles.length; i++) {
+                            const e = articles[i];
+                            e.classList.remove('show')
+                        }
+                    })
+                }
             }
         })
     }
@@ -426,7 +447,7 @@ export default class TravelCamera
             const tween = new TWEEN.Tween(alpha)
             tween.to({x: 0}, 150).easing(TWEEN.Easing.Exponential.InOut).start()
             tween.onUpdate(()=>{
-                mesh.material.color.lerpColors(new THREE.Color('#686DCD'), new THREE.Color("#ffffff"), alpha.x)
+                mesh.material.color.lerpColors(new THREE.Color('#FF6F61'), new THREE.Color("#ffffff"), alpha.x)
             })
             tween.onComplete(()=>{
                 this.previousObject = mesh
@@ -434,16 +455,16 @@ export default class TravelCamera
             
             //Move forward title
             const tweenForward = new TWEEN.Tween(mesh.position)
-            tweenForward.to({z: -15}, 300).easing(TWEEN.Easing.Exponential.InOut).start()
+            tweenForward.to({z: -18}, 300).easing(TWEEN.Easing.Exponential.InOut).start()
             const tweenScale = new TWEEN.Tween(mesh.scale)
-            tweenScale.to({x: 1.5, y: 1.5, z: 1.5}, 300).easing(TWEEN.Easing.Exponential.InOut).start()
+            tweenScale.to({x: 1.2, y: 1.2, z: 1.2}, 300).easing(TWEEN.Easing.Exponential.InOut).start()
 
             //Clear all other objects (due to a bug if you switch between objects to fast)
             const reverseTween = new TWEEN.Tween(reverseAlpha)
             reverseTween.to({x: 1}, 150).easing(TWEEN.Easing.Exponential.InOut).start()
             reverseTween.onUpdate(()=>{
-                clearMesh.material.color.lerpColors(new THREE.Color('#686DCD'), new THREE.Color("#ffffff"), reverseAlpha.x)
-                clearMesh2.material.color.lerpColors(new THREE.Color('#686DCD'), new THREE.Color("#ffffff"), reverseAlpha.x)
+                clearMesh.material.color.lerpColors(new THREE.Color('#FF6F61'), new THREE.Color("#ffffff"), reverseAlpha.x)
+                clearMesh2.material.color.lerpColors(new THREE.Color('#FF6F61'), new THREE.Color("#ffffff"), reverseAlpha.x)
             })
             reverseTween.onComplete(()=>{})
             const tweenBackward = new TWEEN.Tween(clearMesh.position, clearMesh2.position)
@@ -484,16 +505,22 @@ export default class TravelCamera
 
     resize()
     {
-        this.mobileDisplay = window.innerWidth < 800 ? true : false
-        if(this.mobileDisplay)
+        //hide page if showed when you switch between desktop to mobile
+        if(this.isShow)
         {
-            this.finalPositionIntroducing = window.innerWidth > 800 ? new THREE.Vector3(0, 52, 92) : new Vector3(0, -7, 28)
-
+            document.querySelector('.back').click()
+        }
+        
+        this.mobileDisplay = window.innerWidth < 800 ? true : false
+        if(this.mobileDisplay && this.finalPositionIntroducing.y != -7)
+        {
+            this.finalPositionIntroducing = new Vector3(0, -7, 28)
+            
             //update rayscater targets
             this.asteroidCible.position.set(0, -200, 70)
             this.galaxyCible.position.set(0, -10, 0)
             this.cloudCible.position.set(0, -120, -13)
-
+            
             this.posCibleAsteroid = this.asteroidCible.position.clone()
             this.posCibleCloud = this.cloudCible.position.clone()
             this.posCibleGalaxy = this.galaxyCible.position.clone()
@@ -501,20 +528,21 @@ export default class TravelCamera
             this.posCibleAsteroid.x -= 40
             this.posCibleAsteroid.y += 10
             this.posCibleAsteroid.z += 20
-
+            
             this.posCibleCloud.x -= 20
             this.posCibleCloud.y += 15
             this.posCibleCloud.z += 28
-
+            
             this.posCibleGalaxy.x += 10
             this.posCibleGalaxy.y += 1
             this.posCibleGalaxy.z += 20
-
+            
             //update size title
             if (this.text1 && this.text2 && this.text3)
             {
+                console.log("wtf ?!");
                 this.text1.scale.set(0.3, 0.3, 0.3)
-                this.text1.position.x -= 10
+                this.text1.position.x -= 1
                 this.text1.position.y = -20
                 
                 this.text2.scale.set(0.3, 0.3, 0.3)
@@ -525,7 +553,7 @@ export default class TravelCamera
                 this.text3.scale.set(0.3, 0.3, 0.3)
                 this.text3.position.x = 0
                 this.text3.position.y = -75
-                this.text3.position.z = 52
+                this.text3.position.z = 55
 
                 //debug
                 this.experience.debug.ui.add(this.text2.position, "x").min(-200).max(200).step(1).name('cibleCloudx')
@@ -533,7 +561,7 @@ export default class TravelCamera
                 this.experience.debug.ui.add(this.text2.position, "z").min(-200).max(200).step(1).name('cibleCloud z')
             }
         }
-        else if(!this.mobileDisplay)
+        else if(!this.mobileDisplay && this.finalPositionIntroducing.y != 52)
         {
             //add value for each clouds and lights in position for displayed it on row
             this.finalPositionIntroducing = new THREE.Vector3(0, 52, 92)
@@ -689,25 +717,46 @@ export default class TravelCamera
                     this.text3.visible = false
                 }
 
-                //Travel camera
-                const tween = new TWEEN.Tween(this.experience.camera.instance.position)
-                tween.to(posCible, 1500).easing(TWEEN.Easing.Exponential.InOut).start().onComplete(()=>{
+                if(this.mobileDisplay)
+                {
                     this.mouseClick.x = NaN
                     this.mouseClick.y = NaN
                     
                     domPage.classList.add("showPage")
                     document.querySelector('.menu').classList.remove("remove")
-                    
+                    document.querySelector('html').style.overflowY = 'hidden'
                     //Animation when page displayed
                     const allArticle = document.querySelectorAll('.showPage .article')
                     var t = 1500
                     for (let i = 0; i < allArticle.length; i++) {
                         const e = allArticle[i];
                         this.setAnimationWhenPageDisplayed(e, t)
-                       
+                        
                         t += 300
                     }
-                })
+                }
+                else
+                {
+                    //Travel camera
+                    const tween = new TWEEN.Tween(this.experience.camera.instance.position)
+                    tween.to(posCible, 1500).easing(TWEEN.Easing.Exponential.InOut).start().onComplete(()=>{
+                        this.mouseClick.x = NaN
+                        this.mouseClick.y = NaN
+                        
+                        domPage.classList.add("showPage")
+                        document.querySelector('.menu').classList.remove("remove")
+                        
+                        //Animation when page displayed
+                        const allArticle = document.querySelectorAll('.showPage .article')
+                        var t = 1500
+                        for (let i = 0; i < allArticle.length; i++) {
+                            const e = allArticle[i];
+                            this.setAnimationWhenPageDisplayed(e, t)
+                           
+                            t += 300
+                        }
+                    })
+                }
             }
         }
     

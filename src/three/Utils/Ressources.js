@@ -21,6 +21,7 @@ export default class Ressources extends EventEmitter
         this.p = document.querySelector('.showPercent')
         this.loadingScreen = document.querySelector('.loadingScreen')
         this.content = document.querySelector('.content')
+        this.button = document.querySelector('.btn-slice')
 
         this.setLoaders()
         this.startLoading()
@@ -47,32 +48,73 @@ export default class Ressources extends EventEmitter
             }
         };
 
+        const addClasse = (e, t, add)=>{
+            if(add){
+                setTimeout(()=>{
+                    e.classList.add('show')
+                }, t)
+            }else{
+                setTimeout(()=>{
+                    e.classList.remove('show')
+                }, t)
+            }
+            
+        }
+
+        this.loaders.loadingManager.onStart = ()=>{
+            const intro = document.querySelectorAll('.intro p')
+            let t = 0
+
+            for (let i = 0; i < intro.length; i++) {
+                const e = intro[i];
+                addClasse(e, t, true)
+                t += 2500
+            }
+        }
         this.loaders.loadingManager.onLoad = ()=>{
             //make appear elements on side
             const animationAppear = document.querySelectorAll('.animationAppear')
             let t = 1500
         
-            const addClasse = (e, t)=>{
-                setTimeout(()=>{
-                    e.classList.add('show')
-                }, t)
-            }
+           
             for (let i = 0; i < animationAppear.length; i++) {
                 const e = animationAppear[i];
                 t += 500
-                addClasse(e,t)
+                addClasse(e, t, true)
             }
 
             //remove loadingScreen
-            setTimeout(()=>{
+            // setTimeout(()=>{
+            //     this.content.classList.add('remove')
+            //     setTimeout(()=>{
+            //         this.loadingScreen.classList.add('remove')
+            //         document.querySelector('.blackScreen').classList.add('remove')
+
+            //         //triger end on introduction
+            //         this.trigger('goForward')
+            //     }, 300)
+            // }, 300)
+
+            this.button.addEventListener('click', ()=>{
                 this.content.classList.add('remove')
+                    
+                const intro = document.querySelectorAll('.intro p')
+                let t = 0
+    
+                for (let i = 0; i < intro.length; i++) {
+                    const e = intro[i];
+                    addClasse(e, t, false)
+                    t += 200
+                }
+                
                 setTimeout(()=>{
+                    document.querySelector('#app').classList.add('addCursor')
                     this.loadingScreen.classList.add('remove')
 
                     //triger end on introduction
                     this.trigger('goForward')
                 }, 1000)
-            }, 3000)
+            })
 
         }
         this.loaders.DRACOLoader = new DRACOLoader()
@@ -84,9 +126,6 @@ export default class Ressources extends EventEmitter
     }
     startLoading()
     {
-        // this.loaders.loadingManager.onLoad(()=>{
-        //     console.log("ded");
-        // })
         for(const source of this.sources)
         {
             if(source.type === 'gltfModel')

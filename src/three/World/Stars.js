@@ -16,8 +16,8 @@ export default class Stars
         this.mobileDisplay = this.experience.mobileDisplay
 
         this.parameters = {}
-        this.parameters.count = 30000
-        this.parameters.size = 0.1
+        this.parameters.count =  window.innerWidth < 800 ? 15000 : 30000
+        this.parameters.size = 60.0
         this.parameters.insideColor = '#ff6030'
         this.parameters.outsideColor = '#1b3984'
 
@@ -42,7 +42,7 @@ export default class Stars
                 positions[i3 + 1] = (Math.random() - 0.5) * 600
                 positions[i3 + 2] = (Math.random() - 0.15) * 500
     
-                scales[i] = (Math.random() + 3) * 2
+                scales[i] = (Math.random() + 3) * 5
             }
         }
         else{
@@ -70,7 +70,7 @@ export default class Stars
             uniforms:
             {
                 uTest : { value : new THREE.Vector3(1.0)},
-                uSize : { value: 50.0 * this.renderer.instance.getPixelRatio()},
+                uSize : { value: this.parameters.size * this.renderer.instance.getPixelRatio()},
                 uPixelRatio : { value: this.renderer.instance.getPixelRatio()},
             }
         })

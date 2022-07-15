@@ -145,6 +145,7 @@ export default class Cloud
         this.mobileDisplay = window.innerWidth < 800 ? true : false
         if(this.mobileDisplay && this.mobilePosition.x >= 0)
         {
+            console.log("goMobile");
             //add value for each clouds and lights in position for displayed it on column
             this.mobilePosition = new Vector3(-105, -90, 45)
             this.clouds.forEach(cloud => {
@@ -162,8 +163,9 @@ export default class Cloud
         }
         else if(!this.mobileDisplay && this.mobilePosition.x < 0)
         {
+            console.log("godesktop");
             //add value for each clouds and lights in position for displayed it on row
-            this.mobilePosition = new Vector3(105, 90, -60)
+            this.mobilePosition = new Vector3(105, 90, -45)
 
             this.clouds.forEach(cloud => {
                 cloud.position.x += this.mobilePosition.x

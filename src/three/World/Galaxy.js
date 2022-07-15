@@ -15,8 +15,9 @@ export default class Galaxy
         this.scene = this.experience.scene
 
         this.parameters = {}
-        this.parameters.count = 400000
-        this.parameters.cloudCount = 80000
+ 
+        this.parameters.count =  window.innerWidth < 800 ? 200000 : 400000
+        this.parameters.cloudCount =  window.innerWidth < 800 ? 20000 : 40000
         this.parameters.size = 0.010
         this.parameters.radius = 20
         this.parameters.branches = 4

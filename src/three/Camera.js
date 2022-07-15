@@ -16,12 +16,12 @@ export default class Camera
         
         this.isReady = false
         this.finalPosition = window.innerWidth > 800 ? new THREE.Vector3(0, 52, 92) : new Vector3(0, -7, 28)
-
         this.mousePosition = {}
         this.groupCamera = new THREE.Group()
         this.scene.add(this.groupCamera)
         
         this.scrollY = window.scrollY
+        this.positionScrollCamera = 0
 
         this.setInstance()
         this.setParallax()
@@ -38,12 +38,28 @@ export default class Camera
         
         this.groupCamera.add(this.instance)
 
-        this.experience.debug.ui.add(this.instance.position, "x").min(-200).max(200).step(1).name('camera x')
-        this.experience.debug.ui.add(this.instance.position, "y").min(-200).max(200).step(1).name('camera y')
-        this.experience.debug.ui.add(this.instance.position, "z").min(-200).max(200).step(1).name('camera z')
-        this.experience.debug.ui.add(this.instance.rotation, "x").min(-10).max(10).step(0.001).name('roation x')
-        this.experience.debug.ui.add(this.instance.rotation, "y").min(-10).max(10).step(0.001).name('roation y')
-        this.experience.debug.ui.add(this.instance.rotation, "z").min(-10).max(10).step(0.001).name('roation z')
+        //set new fov is aspect ration is strange
+        if (!this.mobileDisplay) {
+            if(this.instance.aspect < 1.5 && this.instance.aspect > 1)
+            {
+                this.instance.fov = 100
+            }
+            else if(this.instance.aspect < 1){
+                this.instance.fov = 110
+            }
+            else{
+                this.instance.fov = 75
+            }
+        }
+        else{
+            this.instance.fov = 75
+        }
+        // this.experience.debug.ui.add(this.instance.position, "x").min(-200).max(200).step(1).name('camera x')
+        // this.experience.debug.ui.add(this.instance.position, "y").min(-200).max(200).step(1).name('camera y')
+        // this.experience.debug.ui.add(this.instance.position, "z").min(-200).max(200).step(1).name('camera z')
+        // this.experience.debug.ui.add(this.instance.rotation, "x").min(-10).max(10).step(0.001).name('roation x')
+        // this.experience.debug.ui.add(this.instance.rotation, "y").min(-10).max(10).step(0.001).name('roation y')
+        // this.experience.debug.ui.add(this.instance.rotation, "z").min(-10).max(10).step(0.001).name('roation z')
     }
 
     setParallax()
@@ -58,7 +74,9 @@ export default class Camera
     {
         window.addEventListener('scroll', () =>
         {
-            this.scrollY = window.scrollY
+            if (this.positionScrollCamera <= 150) {
+                this.scrollY = window.scrollY
+            }
         })
     }
 
@@ -68,20 +86,38 @@ export default class Camera
         this.finalPosition = window.innerWidth > 800 ? new THREE.Vector3(0, 52, 92) : new Vector3(0, -7, 28)
         this.instance.position.y = this.finalPosition.y
         this.instance.aspect = this.sizes.width / this.sizes.height
+        
+        //set new fov is aspect ration is strange
+        if (!this.mobileDisplay) {
+            if(this.instance.aspect < 1.5 && this.instance.aspect > 1)
+            {
+                this.instance.fov = 100
+            }
+            else if(this.instance.aspect < 1){
+                this.instance.fov = 110
+            }
+            else{
+                this.instance.fov = 75
+            }
+        }
+        else{
+            this.instance.fov = 75
+        }
         this.instance.updateProjectionMatrix()
     }
 
     update()
-    {   console.log(this.instance.position.y, this.finalPosition.y);
+    {
         if(this.mobileDisplay && this.instance.position.y === this.finalPosition.y || this.isReadyMobile && this.mobileDisplay)
         {
-            console.log("oui mobile");
+            this.positionScrollCamera = Math.min(this.scrollY / 10, 150)
+            
             //update when camera is ready
             this.isReadyMobile = true
-            this.instance.position.y = this.finalPosition.y - this.scrollY / this.sizes.height * 200
-            this.instance.position.z = this.finalPosition.z + this.scrollY / this.sizes.height * 200
-        }else if(!this.mobileDisplay && this.instance.position.y === this.finalPosition.y){
-            console.log("oui desktop");
+            this.instance.position.y = this.finalPosition.y - this.positionScrollCamera
+            this.instance.position.z = this.finalPosition.z + this.positionScrollCamera
+        }
+        else if(!this.mobileDisplay && this.instance.position.y === this.finalPosition.y){
             this.instance.position.y = this.finalPosition.y
             this.instance.position.z = this.finalPosition.z
         }

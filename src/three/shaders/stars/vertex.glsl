@@ -16,5 +16,4 @@ void main()
 
     gl_PointSize = uSize * aScales;
     gl_PointSize *= (1.0 / - viewPosition.z);
-    gl_PointSize = max(8.0 / uPixelRatio, gl_PointSize);
 }
