@@ -13,12 +13,6 @@ export default
         format: "png"
     },
     {
-        name: 'cloudTexture3',
-        type: 'texture',
-        path: "cloud3",
-        format: "png"
-    },
-    {
         name: 'rockColor',
         type: 'texture',
         path: "ASTEROID_LOW_POLY_1_COLOR_3OPT",

@@ -16,8 +16,8 @@ export default class Galaxy
 
         this.parameters = {}
  
-        this.parameters.count =  window.innerWidth < 800 ? 200000 : 400000
-        this.parameters.cloudCount =  window.innerWidth < 800 ? 20000 : 40000
+        this.parameters.count =  window.innerWidth < 800 ? 90000 : 100000
+        this.parameters.cloudCount =  window.innerWidth < 800 ? 9000 : 10000
         this.parameters.size = 0.010
         this.parameters.radius = 20
         this.parameters.branches = 4
@@ -184,7 +184,7 @@ export default class Galaxy
             fragmentShader: galaxyFragmentShader,
             uniforms:
             {
-                uSize : { value: 100.0 * this.renderer.instance.getPixelRatio()},
+                uSize : { value: 200.0 * this.renderer.instance.getPixelRatio()},
                 uTime : { value : this.experience.time.deltaTimeFrame },
             }
         })

@@ -122,7 +122,7 @@ export default class Camera
             this.instance.position.z = this.finalPosition.z
         }
         
-        if(this.mousePosition.x + 0.01 && this.mousePosition.y)
+        if(this.mousePosition.x + 0.01 && this.mousePosition.y && !this.mobileDisplay)
         {
             const parallaxX = this.mousePosition.x  * 10
             const parallaxY = - this.mousePosition.y * 10

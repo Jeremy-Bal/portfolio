@@ -35,6 +35,7 @@ export default class TravelCamera
         this.isAlreadyActive = false   
         this.isActiveMenu = false
         this.cursorRounded = document.querySelector('.rounded');
+        this.homeOverlay = document.querySelector('.homeOverlay');
 
         //responsive 
         this.finalPositionIntroducing = new Vector3()
@@ -54,8 +55,15 @@ export default class TravelCamera
     {
         const menu = document.querySelector(".menu")
         menu.addEventListener('click', (e)=>{
-            console.log(this.isActiveMenu);
-            if(!this.isActiveMenu)
+            document.querySelectorAll('.transform').forEach(element => {
+                element.style.transform = 'translateY(0)'
+            })
+            document.querySelector('.showPage .container').scrollTop = 0
+            
+            document.querySelectorAll('.article').forEach(element => {
+                element.scrollTop = 0
+            });
+            if(!this.isActiveMenu && e.target.dataset.cible)
             {
                 this.isActiveMenu = true
                 const data = e.target.dataset.cible
@@ -71,7 +79,7 @@ export default class TravelCamera
                             }
     
                         window.document.querySelector('.showPage').classList.remove("showPage")
-    
+
                         //Travel camera
                         new TWEEN.Tween(this.experience.camera.instance.position)
                         .to(this.posCibleCloud, 1500).easing(TWEEN.Easing.Exponential.InOut)
@@ -85,14 +93,8 @@ export default class TravelCamera
                             document.querySelector('.menu').classList.remove("remove")
                             
                             //Animation when page displayed
-                            const allArticle = document.querySelectorAll('.showPage .article')
-                            var t = 1500
-                            for (let i = 0; i < allArticle.length; i++) {
-                                const e = allArticle[i];
-                                this.setAnimationWhenPageDisplayed(e, t)
-                            
-                                t += 300
-                            }
+                            const firstArticle = document.querySelector('.showPage .article')
+                            this.setAnimationWhenPageDisplayed(firstArticle, 500)
                         })
     
                     break;
@@ -107,7 +109,7 @@ export default class TravelCamera
                             }
       
                           setTimeout(()=>{
-                              document.querySelector('.homeOverlay').classList.remove("remove")
+                              this.homeOverlay.classList.remove("remove")
                           }, 300)
                           window.document.querySelector('.showPage').classList.remove("showPage")
       
@@ -116,22 +118,16 @@ export default class TravelCamera
                           .to(this.posCibleGalaxy, 1500).easing(TWEEN.Easing.Exponential.InOut)
                           .start()
                           .onComplete(()=>{
-                              this.mouseClick.x = NaN
-                              this.mouseClick.y = NaN
-                              
-                              window.document.querySelector(".galaxy").classList.add("showPage")
-                              this.isActiveMenu = false
-                              document.querySelector('.menu').classList.remove("remove")
-                              
-                              //Animation when page displayed
-                              const allArticle = document.querySelectorAll('.showPage .article')
-                              var t = 1500
-                              for (let i = 0; i < allArticle.length; i++) {
-                                  const e = allArticle[i];
-                                  this.setAnimationWhenPageDisplayed(e, t)
-                              
-                                  t += 300
-                              }
+                            this.mouseClick.x = NaN
+                            this.mouseClick.y = NaN
+                            
+                            window.document.querySelector(".galaxy").classList.add("showPage")
+                            this.isActiveMenu = false
+                            document.querySelector('.menu').classList.remove("remove")
+                            
+                            //Animation when page displayed
+                            const firstArticle = document.querySelector('.showPage .article')
+                            this.setAnimationWhenPageDisplayed(firstArticle, 500)
                           })
                     break;
                     case "asteroid":
@@ -145,7 +141,7 @@ export default class TravelCamera
                             }
       
                           setTimeout(()=>{
-                              document.querySelector('.homeOverlay').classList.remove("remove")
+                              this.homeOverlay.classList.remove("remove")
                           }, 300)
                           window.document.querySelector('.showPage').classList.remove("showPage")
       
@@ -154,22 +150,16 @@ export default class TravelCamera
                           .to(this.posCibleAsteroid, 1500).easing(TWEEN.Easing.Exponential.InOut)
                           .start()
                           .onComplete(()=>{
-                              this.mouseClick.x = NaN
-                              this.mouseClick.y = NaN
-                              
-                              window.document.querySelector(".asteroid").classList.add("showPage")
-                              this.isActiveMenu = false
-                              document.querySelector('.menu').classList.remove("remove")
-                              
-                              //Animation when page displayed
-                              const allArticle = document.querySelectorAll('.showPage .article')
-                              var t = 1500
-                              for (let i = 0; i < allArticle.length; i++) {
-                                  const e = allArticle[i];
-                                  this.setAnimationWhenPageDisplayed(e, t)
-                              
-                                  t += 300
-                              }
+                            this.mouseClick.x = NaN
+                            this.mouseClick.y = NaN
+                            
+                            window.document.querySelector(".asteroid").classList.add("showPage")
+                            this.isActiveMenu = false
+                            document.querySelector('.menu').classList.remove("remove")
+                            
+                            //Animation when page displayed
+                            const firstArticle = document.querySelector('.showPage .article')
+                            this.setAnimationWhenPageDisplayed(firstArticle, 500)
                           })
                     break;
                     default:
@@ -180,7 +170,6 @@ export default class TravelCamera
     }
     travelCameraOnIntroducing()
     {
-        console.log(this.finalPositionIntroducing);
         //init position
         setTimeout(()=>{
             new TWEEN.Tween(this.experience.camera.instance.position)
@@ -205,8 +194,8 @@ export default class TravelCamera
                 this.cursorRounded.classList.remove('cursor')
             }
             this.cursorRounded.style.transform = `
-                translate3d(calc(${e.clientX}px + 7px - 50%),
-                calc(${e.clientY}px + 6px - 50%),
+                translate3d(calc(${e.clientX}px + 2px - 50%),
+                calc(${e.clientY}px + 0px - 50%),
                 0)`;
         }
 
@@ -229,7 +218,7 @@ export default class TravelCamera
         })
         this.fontLoader.load("EquinoxBold_Regular.json", 
             (file) => {
-                const geometryText1 = new TextGeometry("viva la frita", {
+                const geometryText1 = new TextGeometry("WHO I AM", {
                     font: file,
                     size: 5,
                     height: 0.05,
@@ -247,7 +236,7 @@ export default class TravelCamera
                 this.text1.rotation.x = -0.432;
                 this.scene.add(this.text1)
                 
-                const geometryText2 = new TextGeometry("BaGUETTE", {
+                const geometryText2 = new TextGeometry("MORE INFOS", {
                     font: file,
                     size: 4.5,
                     height: 0.05,
@@ -266,7 +255,7 @@ export default class TravelCamera
 
                 this.scene.add(this.text2)
                 
-                const geometryText3 = new TextGeometry("CONTaCT", {
+                const geometryText3 = new TextGeometry("PROJECTS", {
                     font: file,
                     size: 4.5,
                     height: 0.05,
@@ -349,6 +338,10 @@ export default class TravelCamera
 
     travelCamera()
     {
+        window.addEventListener('touchstart', () => {});
+        window.addEventListener('touchend', () => {});
+        window.addEventListener('touchcancel', () => {});
+        window.addEventListener('touchmove', () => {});
         window.addEventListener("click", (e)=>{
             if(document.querySelector('.loadingScreen').classList.contains('remove'))
             {
@@ -364,7 +357,6 @@ export default class TravelCamera
         const goBack = document.querySelector('.back')
         goBack.addEventListener('click', (e)=>{
             e.stopPropagation()
-            console.log("click");
             if(!this.isActiveMenu)
             {
                 this.isShow = false
@@ -376,18 +368,29 @@ export default class TravelCamera
     
                 //Clear DOM
                 document.querySelector('.visited').classList.remove('visited')
-                document.querySelector('.homeOverlay').classList.remove("none")
+                this.homeOverlay.classList.remove("none")
                 document.querySelector('.menu').classList.add("remove")
                 setTimeout(()=>{
-                    document.querySelector('.homeOverlay').classList.remove("remove")
+                    document.querySelectorAll('.transform').forEach(element => {
+                        element.style.transform = 'translateY(0)'
+                    }, 1000);
+                })
+                document.querySelector('.showPage .container').scrollTop = 0
+
+                setTimeout(()=>{
+                    this.homeOverlay.classList.remove("remove")
                 }, 300)
                 window.document.querySelector('.showPage').classList.remove("showPage")
+                window.document.querySelectorAll('.article').forEach(element => {
+                    element.scrollTop = 0
+                });
                 
                 if(this.mobileDisplay)
                 {
                     this.isAlreadyActive = false
 
-                    document.querySelector('html').style.overflowY = 'visible'
+                    document.querySelector('html').style.overflow = 'visible'
+                    document.querySelector('body').style.overflow = 'visible'
 
                     const articles = document.querySelectorAll('.article')
                     for (let i = 0; i < articles.length; i++) {
@@ -416,7 +419,7 @@ export default class TravelCamera
     }
     addBackground()
     {
-        const planeMilkyWay = new THREE.PlaneGeometry(600, 600/2.7245053272)
+        const planeMilkyWay = new THREE.PlaneGeometry(600, 600 / 2.7245053272)
         const materialMilkyWay = new THREE.MeshBasicMaterial({
             map: this.ressources.items.milkyWay,
             transparent: true
@@ -540,25 +543,24 @@ export default class TravelCamera
             //update size title
             if (this.text1 && this.text2 && this.text3)
             {
-                console.log("wtf ?!");
                 this.text1.scale.set(0.3, 0.3, 0.3)
-                this.text1.position.x -= 1
+                this.text1.position.x += 7
                 this.text1.position.y = -20
                 
                 this.text2.scale.set(0.3, 0.3, 0.3)
-                this.text2.position.x = 0
+                this.text2.position.x = -5
                 this.text2.position.y = -169
                 this.text2.position.z = 150
 
                 this.text3.scale.set(0.3, 0.3, 0.3)
-                this.text3.position.x = 0
+                this.text3.position.x = -3
                 this.text3.position.y = -75
                 this.text3.position.z = 55
 
                 //debug
-                this.experience.debug.ui.add(this.text2.position, "x").min(-200).max(200).step(1).name('cibleCloudx')
-                this.experience.debug.ui.add(this.text2.position, "y").min(-200).max(200).step(1).name('cibleCloud y')
-                this.experience.debug.ui.add(this.text2.position, "z").min(-200).max(200).step(1).name('cibleCloud z')
+                this.experience.debug.ui.add(this.text3.position, "x").min(0).max(100).step(0.01).name('textX')
+                this.experience.debug.ui.add(this.text3.position, "y").min(-200).max(200).step(1).name('cibleCloud y')
+                this.experience.debug.ui.add(this.text3.position, "z").min(-200).max(200).step(1).name('cibleCloud z')
             }
         }
         else if(!this.mobileDisplay && this.finalPositionIntroducing.y != 52)
@@ -674,9 +676,9 @@ export default class TravelCamera
                 this.isShow = true
                 this.isAlreadyActive = true
 
-                document.querySelector('.homeOverlay').classList.add("remove")
+                this.homeOverlay.classList.add("remove")
                 setTimeout(()=>{
-                    document.querySelector('.homeOverlay').classList.add("none")
+                    this.homeOverlay.classList.add("none")
                 }, 300)
 
                 const posCible = intersect[i].object.position.clone()
@@ -724,16 +726,11 @@ export default class TravelCamera
                     
                     domPage.classList.add("showPage")
                     document.querySelector('.menu').classList.remove("remove")
-                    document.querySelector('html').style.overflowY = 'hidden'
+                    document.querySelector('html').style.overflow = 'hidden'
+                    document.querySelector('body').style.overflow = 'hidden'
                     //Animation when page displayed
-                    const allArticle = document.querySelectorAll('.showPage .article')
-                    var t = 1500
-                    for (let i = 0; i < allArticle.length; i++) {
-                        const e = allArticle[i];
-                        this.setAnimationWhenPageDisplayed(e, t)
-                        
-                        t += 300
-                    }
+                    const firstArticle = document.querySelector('.showPage .article')
+                    this.setAnimationWhenPageDisplayed(firstArticle, 500)
                 }
                 else
                 {
@@ -747,14 +744,8 @@ export default class TravelCamera
                         document.querySelector('.menu').classList.remove("remove")
                         
                         //Animation when page displayed
-                        const allArticle = document.querySelectorAll('.showPage .article')
-                        var t = 1500
-                        for (let i = 0; i < allArticle.length; i++) {
-                            const e = allArticle[i];
-                            this.setAnimationWhenPageDisplayed(e, t)
-                           
-                            t += 300
-                        }
+                        const firstArticle = document.querySelector('.showPage .article')
+                        this.setAnimationWhenPageDisplayed(firstArticle, 500)
                     })
                 }
             }

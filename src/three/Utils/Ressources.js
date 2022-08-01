@@ -40,7 +40,7 @@ export default class Ressources extends EventEmitter
                 const showPercent = 100 * progressPercent/1
 
                 this.progress.style.transform = "scaleX("+progressRatio+")"
-                this.p.innerHTML = showPercent + '<span>%</span>'
+                this.p.innerHTML = Math.round(showPercent * 10000) / 10000 + '<span>%</span>'
 
             }else{
                 this.progress = document.querySelector('.maskSpan')
@@ -94,7 +94,7 @@ export default class Ressources extends EventEmitter
             //         this.trigger('goForward')
             //     }, 300)
             // }, 300)
-
+            document.querySelector('.homeButton').classList.add("show")
             this.button.addEventListener('click', ()=>{
                 this.content.classList.add('remove')
                     

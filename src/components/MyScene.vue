@@ -5,13 +5,13 @@
         </div>
         <hr>
         <div class="menuAsteroid">
-            <p data-cible="asteroid" class="cursor">Asteroid</p>
+            <p data-cible="asteroid" class="cursor">MORE INFOS</p>
         </div>
         <div class="menuGalaxy">
-            <p data-cible="galaxy" class="cursor">Galaxy</p>
+            <p data-cible="galaxy" class="cursor">WHO I AM</p>
         </div>
         <div class="menuCloud">
-            <p data-cible="cloud" class="cursor">Cloud</p>
+            <p data-cible="cloud" class="cursor">PROJECTS</p>
         </div>
     </div>
     <div class="contentCanvas">

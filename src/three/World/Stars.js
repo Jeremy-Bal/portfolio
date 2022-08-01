@@ -16,7 +16,7 @@ export default class Stars
         this.mobileDisplay = this.experience.mobileDisplay
 
         this.parameters = {}
-        this.parameters.count =  window.innerWidth < 800 ? 15000 : 30000
+        this.parameters.count =  window.innerWidth < 800 ? 5000 : 20000
         this.parameters.size = 60.0
         this.parameters.insideColor = '#ff6030'
         this.parameters.outsideColor = '#1b3984'
