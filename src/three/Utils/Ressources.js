@@ -22,6 +22,7 @@ export default class Ressources extends EventEmitter
         this.loadingScreen = document.querySelector('.loadingScreen')
         this.content = document.querySelector('.content')
         this.button = document.querySelector('.btn-slice')
+        this.mobileDisplay = window.innerWidth < 800 ? true : false
 
         this.setLoaders()
         this.startLoading()
@@ -72,17 +73,6 @@ export default class Ressources extends EventEmitter
             }
         }
         this.loaders.loadingManager.onLoad = ()=>{
-            //make appear elements on side
-            const animationAppear = document.querySelectorAll('.animationAppear')
-            let t = 1500
-        
-           
-            for (let i = 0; i < animationAppear.length; i++) {
-                const e = animationAppear[i];
-                t += 500
-                addClasse(e, t, true)
-            }
-
             //remove loadingScreen
             // setTimeout(()=>{
             //     this.content.classList.add('remove')
@@ -111,6 +101,21 @@ export default class Ressources extends EventEmitter
                     document.querySelector('#app').classList.add('addCursor')
                     this.loadingScreen.classList.add('remove')
 
+                    //make appear elements on side
+                    const animationAppear = document.querySelectorAll('.animationAppear')
+                    let t = 1500
+                
+                
+                    for (let i = 0; i < animationAppear.length; i++) {
+                        const e = animationAppear[i];
+                        t += 500
+                        addClasse(e, t, true)
+                    }
+                    if(this.mobileDisplay)
+                    {
+                        document.querySelector('body').style.overflow = "visible"
+                    }
+                    
                     //triger end on introduction
                     this.trigger('goForward')
                 }, 1000)

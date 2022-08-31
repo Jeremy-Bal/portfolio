@@ -36,13 +36,18 @@ a{
 .rounded{
     pointer-events: none;
     position: fixed;
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
     z-index: 10000;
     border-radius: 50px;
     border: 2px solid #fff;
-    transition: 300ms ease;
+    transition: 100ms linear;
+    -webkit-transition: 100ms linear;
     transition-property: height, width, border;
+    &.transition{
+        transition-property: height, width, border, transform;
+    }
+    
     &::before{
         content: '';
         position: absolute;
@@ -51,24 +56,23 @@ a{
         left: 0;
         top: 0;
         background-color: rgba(255, 255, 255, 0.1);
-        width: 25px;
-        height: 25px;
+        width: 35px;
+        height: 35px;
         backdrop-filter: blur(1px);
         border-radius: 50px;
     }
-    &::after{
-        content: '';
-        position: absolute;
-        transition: 300ms ease;
-        transition-property: height, width, background-color;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #fff;
-        border-radius: 50px;
-        height: 2px;
-        width: 2px;
-    }
+}
+.cursorPoint{
+    transition: 300ms ease;
+    transition-property: height, width, background-color;
+    background-color: #fff;
+    height: 20px;
+    width: 20px;
+    pointer-events: none;
+    position: fixed;
+    z-index: 10010;
+    border-radius: 50px;
+    mix-blend-mode: difference;
 }
 //If cursor hover an link
 .rounded.cursor, .rounded.cursorMenu{
@@ -81,29 +85,12 @@ a{
         height: 50px;
         background-color: rgba(255, 110, 97, 0.1);
     }
-   &::after{
-        content: '';
-        width: 10px;
-        height: 10px;
-        background-color: $orange;
-    }
 }
-// .addCursor{
-//     .rounded.cursor::before{
-//         content: '';
-//         width: 30px;
-//         height: 30px;
-//         z-index: 10000;
-//         background-color: $orange;
-//     }
-//     .rounded.cursorMenu::before{
-//         content: '';
-//         width: 30px;
-//         height: 30px;
-//         z-index: 10000;
-//         background-color: $orange;
-//     }
-// }
+.cursorPoint.cursor, .cursorPoint.cursorMenu{
+    background-color: $orange;
+    width: 30px;
+    height: 30px;
+}
 .webgl{
     position: fixed;
     z-index: -1;
@@ -995,7 +982,7 @@ body {
     .asteroid, .cloud{
         .link{
             right: 20px;
-            left: auto;
+            left: auto; 
         }
     }
     .galaxy{
@@ -1011,7 +998,7 @@ body {
     }
     body{
         height: 2500px;
-        overflow: visible;
+        overflow: hidden;
         #app{
             position: fixed;
             top: 0;bottom: 0;right: 0;left: 0;
@@ -1115,7 +1102,7 @@ body {
        }
     }
     .homeOverlay .bottom{
-        bottom: 50px;
+        bottom: 45px;
     }
     .absolute{
         top: -50px;

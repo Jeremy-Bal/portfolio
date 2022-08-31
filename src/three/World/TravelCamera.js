@@ -34,7 +34,9 @@ export default class TravelCamera
         this.isShow = false
         this.isAlreadyActive = false   
         this.isActiveMenu = false
+        this.introIsVisble = true
         this.cursorRounded = document.querySelector('.rounded');
+        this.cursorPoint = document.querySelector('.cursorPoint');
         this.homeOverlay = document.querySelector('.homeOverlay');
 
         //responsive 
@@ -49,6 +51,7 @@ export default class TravelCamera
 
         this.ressources.on("goForward", ()=>{
             this.travelCameraOnIntroducing()
+            this.introIsVisble = false
         })
     }
     menu()
@@ -184,15 +187,30 @@ export default class TravelCamera
     }
     setCursor()
     {
+        var ua = navigator.userAgent.toLowerCase(); 
+        if (ua.indexOf('safari') != -1) { 
+            if (ua.indexOf('chrome') > -1) {
+                this.cursorRounded.classList.add('transition')
+            }
+        }else{
+            this.cursorRounded.classList.add('transition')
+        }
         const moveCursor = (e)=> {
             this.mouseHover.x = e.clientX / this.experience.renderer.sizes.width * 2 - 1
             this.mouseHover.y = - (e.clientY / this.experience.renderer.sizes.height) * 2 + 1
+            
             if(e.target.classList.contains('cursor')){
                 this.cursorRounded.classList.add('cursor')
+                this.cursorPoint.classList.add('cursor')
             }
             else if(this.cursorRounded.classList.contains('cursor')){
                 this.cursorRounded.classList.remove('cursor')
+                this.cursorPoint.classList.remove('cursor')
             }
+            this.cursorPoint.style.transform = `
+                translate3d(calc(${e.clientX}px + 2px - 50%),
+                calc(${e.clientY}px + 0px - 50%),
+                0)`;
             this.cursorRounded.style.transform = `
                 translate3d(calc(${e.clientX}px + 2px - 50%),
                 calc(${e.clientY}px + 0px - 50%),
@@ -633,9 +651,10 @@ export default class TravelCamera
             if(!this.hoverIsAlreadyActive && this.text3)
             {
                 this.hoverIsAlreadyActive = true
-                if(!this.isShow)
+                if(!this.isShow && !this.introIsVisble)
                 {
                     this.cursorRounded.classList.add('cursorMenu')
+                    this.cursorPoint.classList.add('cursorMenu')
                 }
 
                 switch (hoverIntersect[i].object.name) {
@@ -666,6 +685,7 @@ export default class TravelCamera
             if(this.cursorRounded.classList.contains('cursorMenu'))
             {
                 this.cursorRounded.classList.remove('cursorMenu')
+                this.cursorPoint.classList.remove('cursorMenu')
             }
         }   
         

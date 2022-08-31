@@ -5,11 +5,11 @@
     <div class="intro">
       <p>A long time ago in a galaxy far<span class="fontPoppins">,</span> far away…</p>
       <p>
-        A French astronaut was lost in space<span class="fontPoppins">,</span> he drifted for days and days in space 
+        A French astronaut was lost in space<span class="fontPoppins">.</span> He drifted for days and days in space 
         <span class="orange">the void</span><span class="fontPoppins">,</span> the infinite..
       </p>
-      <p>When a hope began to disappear<span class="fontPoppins">,</span> a glow blow</p>
-      <p>He append his eyes and discovered the light<span class="orange"> a new chance </span>but also <span class="orange">new challenges.</span></p>
+      <p>When hope began to disappear<span class="fontPoppins">,</span> a glow blow</p>
+      <p>He opened his eyes and discovered the light<span class="orange"> a new chance </span>but also <span class="orange">new challenges.</span></p>
       <p>But witch way<span class="orange"> to go first ? </span></p>
     </div>
     <div class="content">
@@ -28,6 +28,7 @@
     </div>
   </div>
   <div class="rounded"></div>
+  <div class="cursorPoint"></div>
   <div class="home">
     <div class="homeOverlay">
       <div class="head">
@@ -48,9 +49,9 @@
             <a target="_blank" href="https://github.com/Jeremy-Bal/portfolio">
               <img alt="github logo" src="./assets/git.png" style="height: 30px; margin-right: 15px;" class="cursor">
             </a>
-            <a target="_blank" href="#">
+            <!-- <a target="_blank" href="#">
               <img alt="my cv" src="./assets/cv.png" style="height: 30px;" class="cursor">
-            </a>
+            </a> -->
           </div>
         </div>
       </div>
