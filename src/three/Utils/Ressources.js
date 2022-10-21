@@ -190,7 +190,6 @@ export default class Ressources extends EventEmitter
         
         if(this.loaded === this.toLoad)
         {
-            //console.log("this.items", this.items);
             this.trigger("ready")
         }
     }

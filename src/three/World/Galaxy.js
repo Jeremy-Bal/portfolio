@@ -100,15 +100,7 @@ export default class Galaxy
             }
         })
 
-        /*
-         * Add random test value for shader
-         */
-        this.experience.debug.ui.add(this.cloudMaterial.uniforms.uTest.value, 'x').min(0).max(200).step(1).name('Test clooud value x')
-        this.experience.debug.ui.add(this.cloudMaterial.uniforms.uTest.value, 'y').min(-10).max(10).step(0.0001).name('Test clooud value y')
-        this.experience.debug.ui.add(this.cloudMaterial.uniforms.uTest.value, 'z').min(-10).max(10).step(0.0001).name('Test clooud value z')
-
         this.cloudMesh = new THREE.Points(this.cloudGeometry, this.cloudMaterial)
-        //this.cloudMesh.scale.set(2, 2, 2)
         this.experience.scene.add(this.cloudMesh)
     }
     

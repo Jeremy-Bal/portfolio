@@ -25,6 +25,18 @@ export default
         format: "glb"
     },
     {
+        name: 'robot',
+        type: 'gltfModel',
+        path: "unrevealRobot6",
+        format: "glb"
+    },
+    {
+        name: 'robotTexture',
+        type: 'texture',
+        path: "NewBakeOpt",
+        format: "jpg"
+    },
+    {
         name: 'milkyWay',
         type: 'texture',
         path:  'milkyWay',

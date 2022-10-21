@@ -9,7 +9,6 @@
     font-family: "EquinoxRegular";
 }
 body{
-    cursor: none !important;
     -webkit-overflow-scrolling: auto;
     overflow: hidden;
     position: relative;
@@ -962,7 +961,7 @@ body {
     .link{
         display: none;
     }
-    .rounded{
+    .rounded, .cursorPoint{
         display: none;
     }
     body{

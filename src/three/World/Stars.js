@@ -74,13 +74,6 @@ export default class Stars
                 uPixelRatio : { value: this.renderer.instance.getPixelRatio()},
             }
         })
-
-        /* 
-        * Add random test value for shader
-        */
-        this.experience.debug.ui.add(material.uniforms.uTest.value, 'x').min(2).max(10).step(0.0001).name('Test value x')
-        this.experience.debug.ui.add(material.uniforms.uTest.value, 'y').min(-10).max(10).step(0.0001).name('Test value y')
-        this.experience.debug.ui.add(material.uniforms.uTest.value, 'z').min(-10).max(10).step(0.0001).name('Test value z')
         
         this.point = new THREE.Points(this.geometry, material)
 

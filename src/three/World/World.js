@@ -5,6 +5,7 @@ import Asteroide from "./Asteroide.js";
 import Stars from "./Stars";
 import TravelCamera from "./TravelCamera";
 import Dom from "./Dom";
+import Robot from "./Robot";
 
 export default class World
 {
@@ -19,6 +20,7 @@ export default class World
             this.cloud = new Cloud()
             this.asteroide = new Asteroide()
             this.stars = new Stars()
+            this.robot = new Robot()
             this.travelCamera = new TravelCamera()
             this.dom = new Dom()
         })
@@ -39,7 +41,6 @@ export default class World
             this.asteroide.resize()
             this.travelCamera.resize()
             this.stars.resize()
-            // this.galaxy.resize()
         }
     }
     
@@ -50,6 +51,7 @@ export default class World
             this.asteroide.update()
             this.galaxy.update()
             this.cloud.update()
+            this.robot.update()
             this.travelCamera.update()
             this.dom.update()
         }

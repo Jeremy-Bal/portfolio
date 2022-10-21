@@ -187,6 +187,9 @@ export default class TravelCamera
     }
     setCursor()
     {
+        //set custom cursor visible
+        document.querySelector('body').style.cursor = 'none'
+        
         var ua = navigator.userAgent.toLowerCase(); 
         if (ua.indexOf('safari') != -1) { 
             if (ua.indexOf('chrome') > -1) {
@@ -454,9 +457,7 @@ export default class TravelCamera
         )
         
         this.scene.add(this.milkyWayMesh)
-        // this.debug.add(plane.position, 'x').min(-150).max(0).step(0.01).name('x')
-        // this.debug.add(plane.position, 'y').min(-50).max(0).step(0.01).name('y')
-        // this.debug.add(plane.position, 'z').min(-50).max(0).step(0.01).name('z')  
+
     }
     fadeColorTitle(mesh, clearMesh, clearMesh2)
     {
@@ -574,11 +575,6 @@ export default class TravelCamera
                 this.text3.position.x = -3
                 this.text3.position.y = -75
                 this.text3.position.z = 55
-
-                //debug
-                this.experience.debug.ui.add(this.text3.position, "x").min(0).max(100).step(0.01).name('textX')
-                this.experience.debug.ui.add(this.text3.position, "y").min(-200).max(200).step(1).name('cibleCloud y')
-                this.experience.debug.ui.add(this.text3.position, "z").min(-200).max(200).step(1).name('cibleCloud z')
             }
         }
         else if(!this.mobileDisplay && this.finalPositionIntroducing.y != 52)
