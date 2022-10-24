@@ -11,9 +11,12 @@ export default class Robot
         this.ressources = this.experience.ressources
         this.time = this.experience.time
         this.debug = this.experience.debug.ui
-
-        this.addToScene()
-        this.setAnimation()
+        this.mobileDisplay = this.experience.mobileDisplay
+        if(!this.mobileDisplay)
+        {
+            this.addToScene()
+            this.setAnimation()
+        }
     }
 
     addToScene()
@@ -116,6 +119,9 @@ export default class Robot
     }
     update()
     {
-        this.animation.mixer.update(this.time.deltaTime * 0.5)
+        if(!this.mobileDisplay)
+        {
+            this.animation.mixer.update(this.time.deltaTime * 0.5)
+        }
     }
 }

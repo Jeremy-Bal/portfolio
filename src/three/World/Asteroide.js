@@ -40,7 +40,7 @@ export default class Asteroide
             }
         })
         
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 10; i++) {
             const mesh = this.asteroideMesh.clone();
             mesh.material = material
             mesh.clonePosition = new THREE.Vector3(
