@@ -17,7 +17,7 @@ export default class Galaxy
         this.parameters = {}
  
         this.parameters.count =  window.innerWidth < 800 ? 30000 : 40000
-        this.parameters.cloudCount =  window.innerWidth < 800 ? 3000 : 4000
+        this.parameters.cloudCount =  window.innerWidth < 800 ? 10000 : 30000
         this.parameters.size = 0.010
         this.parameters.radius = 20
         this.parameters.branches = 4

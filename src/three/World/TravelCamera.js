@@ -228,13 +228,7 @@ export default class TravelCamera
 
     setTitle()
     {
-        const text1Material = new THREE.MeshMatcapMaterial({
-            matcap: this.ressources.items.matcap,
-        })
-        const text2Material = new THREE.MeshMatcapMaterial({
-            matcap: this.ressources.items.matcap,
-        })
-        const text3Material = new THREE.MeshMatcapMaterial({
+        const textMaterial = new THREE.MeshMatcapMaterial({
             matcap: this.ressources.items.matcap,
         })
         this.fontLoader.load("EquinoxBold_Regular.json", 
@@ -243,14 +237,8 @@ export default class TravelCamera
                     font: file,
                     size: 5,
                     height: 0.05,
-                    curveSegments: 5,
-                    bevelEnabled: true,
-                    bevelThickness: 0.03,
-                    bevelSize: 0.002,
-                    bevelOffset: 0.01,
-                    bevelSegments: 5
                 })
-                this.text1 = new THREE.Mesh(geometryText1, text1Material)
+                this.text1 = new THREE.Mesh(geometryText1, textMaterial)
                 this.text1.position.set(-10, -80, -20)
                 this.text1.clonePosition = this.text1.position.clone()
 
@@ -262,14 +250,9 @@ export default class TravelCamera
                     size: 4.5,
                     height: 0.05,
                     curveSegments: 5,
-                    bevelEnabled: true,
-                    bevelThickness: 0.03,
-                    bevelSize: 0.0002,
-                    bevelOffset: 0.01,
-                    bevelSegments: 5
                 })
 
-                this.text2 = new THREE.Mesh(geometryText2, text2Material)
+                this.text2 = new THREE.Mesh(geometryText2, textMaterial)
                 this.text2.rotation.x = -0.432;
                 this.text2.position.set(-130, 30, -20)
                 this.text2.clonePosition = this.text2.position.clone()
@@ -281,14 +264,9 @@ export default class TravelCamera
                     size: 4.5,
                     height: 0.05,
                     curveSegments: 5,
-                    bevelEnabled: true,
-                    bevelThickness: 0.03,
-                    bevelSize: 0.002,
-                    bevelOffset: 0.01,
-                    bevelSegments: 5
                 })
                 
-                this.text3 = new THREE.Mesh(geometryText3, text3Material)
+                this.text3 = new THREE.Mesh(geometryText3, textMaterial)
                 this.text3.rotation.x = -0.432;
                 this.text3.position.set(90, 30, -20)
                 this.text3.clonePosition = this.text3.position.clone()
@@ -440,7 +418,7 @@ export default class TravelCamera
     }
     addBackground()
     {
-        const planeMilkyWay = new THREE.PlaneGeometry(600, 600 / 2.7245053272)
+        const planeMilkyWay = new THREE.PlaneGeometry(300, 300 / 2.7)
         const materialMilkyWay = new THREE.MeshBasicMaterial({
             map: this.ressources.items.milkyWay,
             transparent: true
@@ -457,7 +435,6 @@ export default class TravelCamera
         )
         
         this.scene.add(this.milkyWayMesh)
-
     }
     fadeColorTitle(mesh, clearMesh, clearMesh2)
     {

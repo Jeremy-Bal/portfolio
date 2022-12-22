@@ -10,7 +10,7 @@
       </p>
       <p>When hope began to disappear<span class="fontPoppins">,</span> a glow blow</p>
       <p>He opened his eyes and discovered the light<span class="orange"> a new chance </span>but also <span class="orange">new challenges.</span></p>
-      <p>But witch way<span class="orange"> to go first ? </span></p>
+      <p>But which way<span class="orange"> to go first ? </span></p>
     </div>
     <div class="content">
       <p class="fontEquinoxBold">Loading <span style="font-size: 20px;">..</span></p>
@@ -126,7 +126,7 @@
                   The scene was directly created from<span> Blender</span><span class="fontPoppins">,</span> the textures was baked and the patern of the portal is a noise used in <span>shaders</span>. <br> <br>
                   For fun i decided to <span>improve</span> it and add some particles.
                 </p>
-                <img src="./assets/portal.png" alt="screen of course content" class="mt-4">
+                <img src="./assets/portal.jpg" alt="screen of course content" class="mt-4">
               </div>
             </Parallax>
           </div>

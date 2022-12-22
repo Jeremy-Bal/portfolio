@@ -15,5 +15,5 @@ void main()
     gl_Position = projectedPosition;
 
     gl_PointSize = uSize * aScales;
-    gl_PointSize *= (1.0 / - viewPosition.z);
+    gl_PointSize *= (1.0 / - (viewPosition.z / 3.0));
 }
