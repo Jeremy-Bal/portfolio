@@ -16,8 +16,8 @@ export default class Stars
         this.mobileDisplay = this.experience.mobileDisplay
 
         this.parameters = {}
-        this.parameters.count =  window.innerWidth < 800 ? 3000 : 4000
-        this.parameters.size = 100.0
+        this.parameters.count =  window.innerWidth < 800 ? 3000 : 5000
+        this.parameters.size = 50.0
         this.parameters.insideColor = '#ff6030'
         this.parameters.outsideColor = '#1b3984'
 
@@ -60,7 +60,7 @@ export default class Stars
         
         this.geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3))
         this.geometry.setAttribute('aScales', new THREE.BufferAttribute(scales, 1))
-
+        console.log(this.parameters.size * window.devicePixelRatio);
         const material = new THREE.ShaderMaterial({
             depthWrite: false,
             blending: THREE.AdditiveBlending,
@@ -70,7 +70,7 @@ export default class Stars
             uniforms:
             {
                 uTest : { value : new THREE.Vector3(1.0)},
-                uSize : { value: this.parameters.size * this.renderer.instance.getPixelRatio()},
+                uSize : { value: this.parameters.size * window.devicePixelRatio},
                 uPixelRatio : { value: this.renderer.instance.getPixelRatio()},
             }
         })

@@ -68,6 +68,60 @@
                   <h1>Some projects</h1>
                 </Parallax>
                 <Parallax where="cloud" :speed="5">
+                  <h2 class="orange">Night walk in japan</h2>
+                </Parallax>
+                <div class="tech">
+                <Parallax where="cloud" :speed="5">
+                  <img src="./assets/threejs.png" alt="threejs logo">
+                </Parallax>
+                <Parallax where="cloud" :speed="4">
+                  <img src="./assets/react.png" alt="react logo">
+                </Parallax>
+                <Parallax where="cloud" :speed="3">
+                  <img src="./assets/vercel.png" alt="vercel logo" style="filter: invert(100%)">
+                </Parallax>
+                <Parallax where="cloud" :speed="2">
+                  <img src="./assets/blender.png" alt="blender">
+                </Parallax>
+                </div>
+                <p>
+                  This <span>personal project</span> was realized for fun and self training.<br><br>
+                  The goal of this project was to create a street in japan at the night<br>
+                  I developed this website using <span>React Three Fiber</span> and <span>Blender</span>.
+                  <br /><br />If you <span>would like to see more</span>, you can by clicking on the <span>photo</span> visit the site.
+                </p>
+                <div class="mt-2">
+                  <a href="https://night-walk-in-japan.vercel.app/" class="cursor" target="_blank">
+                    <img src="./assets/jpanScreen.jpg" alt="screeen of my japan project" class="cursor">
+                  </a>
+                </div>
+              </div>
+            </Parallax>
+          </div>
+          <div class="article">
+            <Parallax where="cloud" :speed="3" :zoom="true">
+              <div class="auto">
+                <Parallax where="cloud" :speed="5">
+                  <h2 class="orange">A Cat</h2>
+                </Parallax>
+                <div class="tech">
+                <Parallax where="cloud" :speed="5">
+                  <img src="./assets/blender.png" alt="threejs logo">
+                </Parallax>
+                </div>
+                <p>
+                  To my personal satisfaction, I decided to create a white cat.
+                </p>
+                <div class="mt-2">
+                  <img src="./assets/cat1.png" alt="screeen of my 3D cat">
+                </div>
+              </div>
+            </Parallax>
+          </div>
+          <div class="article">
+            <Parallax where="cloud" :speed="3" :zoom="true">
+              <div class="auto">
+                <Parallax where="cloud" :speed="5">
                   <h2 class="orange">Vast</h2>
                 </Parallax>
                 <div class="tech">

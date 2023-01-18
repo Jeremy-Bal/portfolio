@@ -18,7 +18,7 @@ export default class Galaxy
  
         this.parameters.count =  window.innerWidth < 800 ? 30000 : 40000
         this.parameters.cloudCount =  window.innerWidth < 800 ? 10000 : 30000
-        this.parameters.size = 0.010
+        this.parameters.size = 200.0
         this.parameters.radius = 20
         this.parameters.branches = 4
         this.parameters.spin = 1
@@ -95,6 +95,7 @@ export default class Galaxy
             fragmentShader: cloudFragmentShader,
             uniforms:
             {
+                uSize : { value: this.parameters.size * window.devicePixelRatio},
                 uTime : { value: this.experience.time.deltaTimeFrame},
                 uTest : { value : new THREE.Vector3(120, 6, 1)}
             }
@@ -176,7 +177,7 @@ export default class Galaxy
             fragmentShader: galaxyFragmentShader,
             uniforms:
             {
-                uSize : { value: 200.0 * this.renderer.instance.getPixelRatio()},
+                uSize : { value: 100.0 * window.devicePixelRatio},
                 uTime : { value : this.experience.time.deltaTimeFrame },
             }
         })
