@@ -60,7 +60,6 @@ export default class Stars
         
         this.geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3))
         this.geometry.setAttribute('aScales', new THREE.BufferAttribute(scales, 1))
-        console.log(this.parameters.size * window.devicePixelRatio);
         const material = new THREE.ShaderMaterial({
             depthWrite: false,
             blending: THREE.AdditiveBlending,

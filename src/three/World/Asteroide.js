@@ -10,84 +10,96 @@ export default class Asteroide
         this.scene = this.experience.scene
         this.ressources = this.experience.ressources
         this.time = this.experience.time
-        this.debug = this.experience.debug.ui
         this.mobileDisplay = this.experience.mobileDisplay
         
         this.mobilePosition = new Vector3(0)
-        this.group = new THREE.Group()
+
+        this.instanceWhiteAsteroid = null
+        this.instanceOrangeAsteroid = null
 
         this.addToScene()
         this.resize()
     }
     addToScene()
     {
-        this.model = this.ressources.items.rockModele.scene
-
-        this.ressources.items.rockColor.minFilter = THREE.NearestFilter;
-        this.ressources.items.rockColor.magFilter = THREE.NearestFilter;
-
-        const material = new THREE.MeshBasicMaterial({
-            map: this.ressources.items.rockColor
+        this.model = this.ressources.items.asteroid_GO.scene
+        const whiteMaterial = new THREE.MeshBasicMaterial({
+            map: this.ressources.items.Lunar_Target
         })
-        material.map.flipY = false
+        const orangeMaterial = new THREE.MeshBasicMaterial({
+            map: this.ressources.items.orangeMoon
+        })
         
         this.asteroideMesh = null
-
         this.model.traverse((child)=>{
             if(child instanceof THREE.Mesh)
             {
                 this.asteroideMesh = child
             }
         })
-        
-        for (let i = 0; i < 20; i++) {
-            const mesh = this.asteroideMesh.clone();
-            mesh.material = material
-            mesh.clonePosition = new THREE.Vector3(
-                (-30 + (Math.random() - 0.5) * 100),
-                ((Math.random() - 0.5) * 800),
-                (Math.random() - 0.5) * 100
-                )
-            mesh.rotation.x = 3
-            mesh.rotation.y = (Math.random() - 0.5) * 3
-            mesh.rotation.z = (Math.random() - 0.5)
 
-            const scale = Math.random() + 1
-            mesh.scale.set(scale, scale, scale)
-            this.group.add(mesh)
+        const asteroidCount = 1000
+        this.instanceWhiteAsteroid = new THREE.InstancedMesh(this.asteroideMesh.geometry, whiteMaterial, asteroidCount * 1.5)
+        this.instanceWhiteAsteroid.instanceMatrix.setUsage( THREE.DynamicDrawUsage ); // will be updated every frame
+        this.instanceOrangeAsteroid = new THREE.InstancedMesh(this.asteroideMesh.geometry, orangeMaterial, asteroidCount / 4)
+        this.instanceOrangeAsteroid.instanceMatrix.setUsage( THREE.DynamicDrawUsage ); // will be updated every frame
+
+        for (let i = 0; i < asteroidCount; i++) {
+            const random = (Math.random() - 0.5) * 100
+            const randomY = (Math.random() - 0.5) * 20
+            const randomRot = Math.random() / 3
+            const randomScale = (Math.random() + 0.2, 1) * Math.random()
+
+            const matrix = new THREE.Matrix4()
+            matrix.compose(
+                new THREE.Vector3(
+                    (Math.sin(random) * 50) + (Math.random() - 0.5) * 20,
+                    randomY,
+                    (Math.cos(random) * 30) + (Math.random() - 0.5) * 20
+                ),
+                new THREE.Quaternion(randomRot, randomRot, randomRot),
+                new THREE.Vector3(randomScale, randomScale, randomScale)
+            )
+            this.instanceWhiteAsteroid.setMatrixAt(i, matrix)
+            this.instanceOrangeAsteroid.setMatrixAt(i, matrix)
         }
-
-        this.group.position.set(-100, 0, 4.5)
-        
-        this.scene.add(this.group)  
+        if(this.mobileDisplay)
+        {
+            this.instanceWhiteAsteroid.position.set(0, -200, 130)
+            this.instanceOrangeAsteroid.position.set(0, -200, 130)
+        }else{
+            this.instanceWhiteAsteroid.position.set(-140, 0, 4.5)
+            this.instanceOrangeAsteroid.position.set(-140, 0, 4.5)
+        }
+        this.scene.add(this.instanceWhiteAsteroid, this.instanceOrangeAsteroid)
     }
     
     resize()
     {
         this.mobileDisplay = window.innerWidth < 800 ? true : false
-        if(this.mobileDisplay && this.mobilePosition.x <= 0)
+        if(this.mobileDisplay && this.instanceWhiteAsteroid.position.x != 0)
         {
             //add value for each clouds and lights in position for displayed it on column
-            this.mobilePosition = new Vector3(120, -200, -100)
+            this.instanceWhiteAsteroid.position.set(0, -200, 130)
+            this.instanceOrangeAsteroid.position.set(0, -200, 130)
         }
-        else if(!this.mobileDisplay && this.mobilePosition.x > 0)
+        else if(!this.mobileDisplay && this.instanceWhiteAsteroid.position.x != -100)
         {
             //add value for each clouds and lights in position for displayed it on row
-            this.mobilePosition = new Vector3(0)
+            this.instanceWhiteAsteroid.position.set(-100, 0, 4.5)
+            this.instanceOrangeAsteroid.position.set(-100, 0, 4.5)
         }
     }
 
     update()
     {
         //Animation asteroid
-        const angle = this.time.elapsed * 0.00005
-        this.group.traverse((mesh)=>{
-            if(mesh instanceof THREE.Mesh)
-            {
-                mesh.position.x = (Math.sin(angle - mesh.clonePosition.x) * 40) - 10  + (this.mobilePosition.x)
-                mesh.position.z = (Math.cos(angle - mesh.clonePosition.x) * 40) + mesh.clonePosition.z * 0.5 - (this.mobilePosition.z)
-                mesh.position.y = (Math.cos(angle + mesh.clonePosition.y * 100) * 20) - 7 + (this.mobilePosition.y)
-            }
-        })
+        const angle = this.time.elapsed * 0.00002
+        
+        if(this.instanceWhiteAsteroid && this.instanceOrangeAsteroid)
+        {
+            this.instanceWhiteAsteroid.rotation.y = angle
+            this.instanceOrangeAsteroid.rotation.y = angle * 1.5
+        }
     }
-}   
+}

@@ -74,6 +74,7 @@ export default class Ressources extends EventEmitter
         }
         this.loaders.loadingManager.onLoad = ()=>{
             //remove loadingScreen
+            
             // setTimeout(()=>{
             //     this.content.classList.add('remove')
             //     setTimeout(()=>{
@@ -84,6 +85,10 @@ export default class Ressources extends EventEmitter
             //         this.trigger('goForward')
             //     }, 300)
             // }, 300)
+
+            
+            //addLoadingScreen
+
             document.querySelector('.homeButton').classList.add("show")
             this.button.addEventListener('click', ()=>{
                 this.content.classList.add('remove')

@@ -13,16 +13,22 @@ export default
         format: "png"
     },
     {
-        name: 'rockColor',
+        name: 'asteroid_GO',
+        type: 'gltfModel',
+        path: "asteroid_GO",
+        format: "glb"
+    },
+    {
+        name: 'Lunar_Target',
         type: 'texture',
-        path: "ASTEROID_LOW_POLY_1_COLOR_3OPT",
+        path: "Lunar_Target",
         format: "jpg"
     },
     {
-        name: 'rockModele',
-        type: 'gltfModel',
-        path: "Asteroid",
-        format: "glb"
+        name: 'orangeMoon',
+        type: 'texture',
+        path: "orangeMoon",
+        format: "jpeg"
     },
     {
         name: 'robot',
@@ -40,12 +46,6 @@ export default
         name: 'milkyWay',
         type: 'texture',
         path:  'milkyWay',
-        format: "png"
-    },
-    {
-        name: 'matcap',
-        type: 'texture',
-        path:  'matcap2',
         format: "png"
     }
 
