@@ -61,13 +61,14 @@ export default class TravelCamera
             document.querySelectorAll('.transform').forEach(element => {
                 element.style.transform = 'translateY(0)'
             })
-            document.querySelector('.showPage .container').scrollTop = 0
             
             document.querySelectorAll('.article').forEach(element => {
                 element.scrollTop = 0
             });
             if(!this.isActiveMenu && e.target.dataset.cible)
             {
+            document.querySelector('.showPage .container').scrollTop = 0
+
                 this.isActiveMenu = true
                 const data = e.target.dataset.cible
                 switch (data) {
@@ -135,6 +136,7 @@ export default class TravelCamera
                     break;
                     case "asteroid":
                           //Clear DOM
+                          console.log('asteroid');
                           document.querySelector('.visited').classList.remove('visited')
                           document.querySelector('.menuAsteroid p').classList.add("visited")
                           this.articles = document.querySelectorAll('.article')
@@ -230,6 +232,7 @@ export default class TravelCamera
     {
         const textMaterial = new THREE.MeshMatcapMaterial({
             matcap: this.ressources.items.matcap,
+            fog: false
         })
         this.fontLoader.load("EquinoxBold_Regular.json", 
             (file) => {
@@ -404,6 +407,10 @@ export default class TravelCamera
                     tweenRevert.to(this.finalPositionIntroducing, 1500)
                     .easing(TWEEN.Easing.Exponential.InOut)
                     .start()
+                    .onUpdate((time)=>{
+                        this.scene.fog.near = THREE.MathUtils.lerp(0.1, 10, time    )
+                        this.scene.fog.far = THREE.MathUtils.lerp(25, 130, time)
+                    })
                     .onComplete(()=>{
                         this.isAlreadyActive = false
                         const articles = document.querySelectorAll('.article')
@@ -421,7 +428,8 @@ export default class TravelCamera
         const planeMilkyWay = new THREE.PlaneGeometry(300, 300 / 2.7)
         const materialMilkyWay = new THREE.MeshBasicMaterial({
             map: this.ressources.items.milkyWay,
-            transparent: true
+            transparent: true,
+            fog: false
         })
 
         this.milkyWayMesh = new THREE.Mesh(planeMilkyWay, materialMilkyWay)
@@ -664,6 +672,7 @@ export default class TravelCamera
         
         //Intercept on click
         for (let i = 0; i < intersect.length; i++) {
+       
             if(!this.isAlreadyActive)
             {
                 this.isShow = true
@@ -729,10 +738,17 @@ export default class TravelCamera
                 {
                     //Travel camera
                     const tween = new TWEEN.Tween(this.experience.camera.instance.position)
-                    tween.to(posCible, 1500).easing(TWEEN.Easing.Exponential.InOut).start().onComplete(()=>{
+                    tween.to(posCible, 1500).easing(TWEEN.Easing.Exponential.InOut)
+                    .start()
+                    .onUpdate((time)=>{
+                        this.scene.fog.near = THREE.MathUtils.lerp(10, 0.1, time)
+                        this.scene.fog.far = THREE.MathUtils.lerp(130, 25, time)
+                    })
+                    .onComplete(()=>{
+                        
                         this.mouseClick.x = NaN
                         this.mouseClick.y = NaN
-                        
+                        console.log('end', this.scene.fog.near);
                         domPage.classList.add("showPage")
                         document.querySelector('.menu').classList.remove("remove")
                         

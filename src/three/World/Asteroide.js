@@ -38,7 +38,7 @@ export default class Asteroide
             }
         })
 
-        const asteroidCount = 1000
+        const asteroidCount = 500
         this.instanceWhiteAsteroid = new THREE.InstancedMesh(this.asteroideMesh.geometry, whiteMaterial, asteroidCount * 1.5)
         this.instanceWhiteAsteroid.instanceMatrix.setUsage( THREE.DynamicDrawUsage ); // will be updated every frame
         this.instanceOrangeAsteroid = new THREE.InstancedMesh(this.asteroideMesh.geometry, orangeMaterial, asteroidCount / 4)

@@ -49,9 +49,9 @@
             <a target="_blank" href="https://github.com/Jeremy-Bal/portfolio">
               <img alt="github logo" src="./assets/git.png" style="height: 30px; margin-right: 15px;" class="cursor">
             </a>
-            <!-- <a target="_blank" href="#">
+            <a href="./cv.pdf" download>
               <img alt="my cv" src="./assets/cv.png" style="height: 30px;" class="cursor">
-            </a> -->
+            </a> 
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ export default class Cloud
         this.mobileDisplay = this.experience.mobileDisplay
 
         this.parameter = {}
-        this.parameter.count = 50
+        this.parameter.count = 100
         this.parameter.cloud = this.experience.ressources.items.cloudTexture
         this.parameter.cloud2 = this.experience.ressources.items.cloudTexture2
         this.parameter.flashPosition = new Vector3(60, 3, -10)
@@ -33,16 +33,18 @@ export default class Cloud
     {
         const material = new THREE.MeshLambertMaterial({
             map: this.parameter.cloud,
-            transparent: true
+            transparent: true,
+            fog: false
         })
         const material2 = new THREE.MeshLambertMaterial({
             map: this.parameter.cloud2,
-            transparent: true
+            transparent: true,
+            fog: false
         })
 
-        const cloudGeometry = new THREE.PlaneBufferGeometry(50, 50)
-        const cloud2Geometry = new THREE.PlaneBufferGeometry(30, 30)
-        const cloud3Geometry = new THREE.PlaneBufferGeometry(20, 20)
+        const cloudGeometry = new THREE.PlaneGeometry(50, 50)
+        const cloud2Geometry = new THREE.PlaneGeometry(30, 30)
+        const cloud3Geometry = new THREE.PlaneGeometry(20, 20)
 
         for(let i = 0; i < this.parameter.count; i++)
         {

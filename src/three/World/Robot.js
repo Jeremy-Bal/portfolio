@@ -23,7 +23,7 @@ export default class Robot
     {
         const texture = this.ressources.items.robotTexture
         texture.flipY = false
-        const material = new THREE.MeshBasicMaterial({ map: texture })
+        const material = new THREE.MeshBasicMaterial({ map: texture, fog: false})
 
         this.robotRessource = this.ressources.items.robot
         this.robot = this.robotRessource.scene

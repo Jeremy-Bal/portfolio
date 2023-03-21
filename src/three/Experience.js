@@ -36,7 +36,7 @@ export default class Experience
         this.mobileDisplay = window.innerWidth < 800 ? true : false
         
         //FOG
-        this.scene.fog = new THREE.Fog("#212254", 1, 314)
+        this.scene.fog = new THREE.Fog("#04040b", 10, 130)
 
         this.debug.ui.addColor(this.scene.fog, "color").onChange(()=>{
             this.scene.fog.color.set(this.scene.fog.color)
